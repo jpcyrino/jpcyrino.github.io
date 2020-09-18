@@ -1,0 +1,63 @@
+---
+title: "Exercícios"
+author: "João Paulo Lazzarini Cyrino"
+date: "18/09/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Os exercícios foram retirados do livro *Mathematical Methods in Linguistics*, de Barbara Partee, Alice ter Meulen e Robert Wall. 
+
+1. Considere um conjunto $S$ e responda:
+
+* $S \in \{S\}$?
+* $\{S\} \in \{S\}$?
+* $\{S\} \subseteq \{S\}$?
+* Qual o conjunto cujo único membro é $\{S\}$?
+
+2. Resolver em R, considerando $A = \{a,b,c\}$, $B = \{c,d\}$, $C = \{d,e,f\}$:
+
+* $A \cup B$
+* $A \cap B$
+* $A \cup (B \cap C)$
+* $C \cup A$
+* $B \cup \{\}$
+* $A - B$
+
+3. Considerando $A = \{a,b\}$ e $B = \{2,3\}$, resolver em R:
+
+* $A \times B$
+* $B \times A$
+* $A \times A$
+* $(A \cup B) \times B$
+* $(A \cap B) \times B$
+* $(A - B) \times (B - A)$
+
+4. Traduzir para Linguagem lógica:
+
+* Ou João está em casa, ou Maria está, ou possivelmente os dois. 
+* Quando ele chega, todo mundo vai embora
+* Ele só vai passar de ano se for bem nessa prova. 
+* Uma condição para que as negociações comecem é que ele pare de falar essas coisas. 
+
+5. Utilize R para calcular as expressões abaixo, considerando que *p*,*q* e *r* são verdadeiros e *s* é falso:
+
+* $((p \land q) \land s)$
+* $(p \to s)$
+* $((p \land q) \leftrightarrow (r \land \neg s))$
+* $(s \lor p)$
+
+6. Utilize R para provar:
+
+* $(p \to q), (q \to r), \neg r \therefore \neg p$
+* $p, \neg r, (p \land \neg r) \to q \therefore q$
+
+7. Utilize lógica formal para testar a afirmação abaixo:
+
+* Se a pressão está em 1atm, a água está fervendo somente se a temperatura está em, pelo menos, 100 graus. Se a pressão está em 1atm, então a água está congelada somente se a temperatura está em, no máximo, 0 graus. A pressão está em 1 atm e ou a temperatura está em, pelo menos, 100 graus ou no máximo em 0 graus. A água não está fervendo. Portanto, a temperatura está, no máximo, em 0 graus. *
+
