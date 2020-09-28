@@ -1,8 +1,10 @@
 ---
-title: "Modelo Markoviano de Gramática"
+title: "Uma introdução prática ao Modelo Markov de gramática"
 author: "João Paulo Lazzarini Cyrino"
 date: "26/09/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -178,19 +180,106 @@ car <- strsplit(corpus, split="")[[1]]
 
 O vetor `car` contém todos os caracteres do corpus em sequência. Queremos fazer um algoritmo que monte um texto da seguinte forma:
 
-1- Escolher um caractere aleatoriamente
-2- Anotar o caractere imediatamente posterior em uma string
-3- Escolher um aleatoriamente um caractere idêntico a esse anotado 
-4- Repetir a partir de 2. 
+1. Escolher um caractere aleatoriamente
+2. Anotar o caractere imediatamente posterior em uma string
+3. Escolher um aleatoriamente um caractere idêntico a esse anotado 
+4. Repetir a partir de 2. 
 
-Vamos implementar isso em R:
+Para fazer isso em R de maneira eficiente faremos uma tabela que associe cada caractere ao vizinho imediato. Uma das colunas terá do primeiro ao penúltimo caractere do corpus e a outra do segundo ao último. Veja como isso pode ser feito:
 
 ```{r}
-gera_texto <- function(n) {
-  
-}
+# Criar a matriz e converter em data.frame
+tabela <- data.frame(cbind(car[1:length(car)-1],car[2:length(car)]))
+# Dar nomes 'i' e 'j' às colunas:
+colnames(tabela) <- c('i','j')
+# Mostrar primeiras 10 linhas:
+tabela[1:10,]
 ```
 
+Agora, para o algoritmo:
+
+```{r}
+gerar.texto <- function(n) {
+  # Escolher aleatoriamente uma linha da tabela:
+  l <- sample(c(1:nrow(tabela)),1)
+  # Capturar o elemento e seguinte:
+  e <- tabela$j[l]
+  # Criar string
+  s <- ""
+  # Repetir n vezes
+  for (i in 1:n) {
+    # Anotar na string o elemento e:
+    s <- paste(s,e,sep="")
+    # Escolher, aleatoriamente uma linha que tenha o elemento e
+    # na primeira coluna e capturar o elemento seguinte
+    e <- sample(tabela[tabela$i==e,2],1)
+  }
+  # Retornar a string
+  s
+}
+# Chamar a função com 100 caracteres
+gerar.texto(100)
+```
+
+Você acha que o resultado ficou *ligeiramente* mais interessante/semelhante ao português? Perceba que essa semelhança vai se dar em um nível ortográfico apenas, já que estamos lidando com a distribuição dos caracteres de um texto de língua portuguesa. Podemos melhorar a semelhança aumentando a memória para, ao invés do último caractere, os dois últimos, por exemplo. Mas especificamente o *processo estocástico* que envolve apenas a memória do úlitmo evento é denominado *Cadeia de Markov* e o que acabamos de fazer é um gerador de sequências de caracteres baseado em uma *Cadeia de Markov*.
+
+Esse tipo de gerador torna-se surpreendente quando, ao invés de sequências de caracteres, começamos a utilizar sequências de palavras. Veremos isso adiante.
+
+## Modelo Markov de Gramática
+
+Vamos retomar nosso corpus e, ao invés de extrair uma sequência de caracteres, vamos extrair as palavras. Para fazer isso, precisamos criar um algoritmo que separe as palavras com a função `strsplit`. Também vamos usar as funções `gsub` e `setdiff` para fazer algumas limpezas no corpus. Abaixo temos uma forma (não das mais elegantes) de obter um vetor de palavras:
+
+```{r}
+# Substituir sinais de quebra de linha por " "
+corpus.novo <- gsub("\n"," ",corpus) 
+# Substituir sinais de pontuação por ""
+corpus.novo <- gsub("[.,;:!?]","",corpus.novo)
+# Obter o vetor de palavras
+pal <- strsplit(corpus.novo," ")[[1]]
+# Excluir strings vazias do vetor
+pal <- setdiff(pal, "")
+# 100 primeiras palavras
+pal[1:100]
+```
+
+Vamos agora criar nossa tabela de palavras bigramas (palavra e sua palavra vizinha):
+
+```{r}
+tabela <- data.frame(cbind(pal[1:length(pal)-1],pal[2:length(pal)]))
+colnames(tabela) <- c("i","j")
+tabela[1:10,]
+```
+
+Agora vamos recriar a função que gera um texto a partir de nossa tabela:
+
+```{r}
+gerar.texto <- function(n) {
+  # Escolher aleatoriamente uma linha da tabela:
+  l <- sample(c(1:nrow(tabela)),1)
+  # Capturar o elemento e seguinte:
+  e <- tabela$j[l]
+  # Criar string
+  s <- ""
+  # Repetir n vezes
+  for (i in 1:n) {
+    # Anotar na string o elemento e:
+    s <- paste(s,e,sep=" ")
+    # Escolher, aleatoriamente uma linha que tenha o elemento e
+    # na primeira coluna e capturar o elemento seguinte
+    e <- sample(tabela[tabela$i==e,2],1)
+  }
+  # Retornar a string
+  s
+}
+# Chamar a função com 100 caracteres
+gerar.texto(100)
+```
+
+Os resultados são um tanto quanto impressionantes, não?
+
+O que acabamos de fazer foi um gerador de textos a partir de uma gramática Markov do português. Também chamamos isso de modelo de bigramas, ou melhor, de n-gramas, já que pode haver modelos que levem em conta uma memória maior do que a da palavra imediatamente anterior. 
+
+Obviamente, há muito o que fazer (especialmente com relação à pontuação) para tornar os textos gerados por esse tipo de modelo mais parecidos com um texto de língua portuguesa. Mas já é um ponto de partida para entendermos que existe um caminho de se entender a gramática das línguas sob uma perspectiva probabilística. 
 
 
 
