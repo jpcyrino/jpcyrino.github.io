@@ -142,8 +142,8 @@ $p$ | $q$ | $r$ | $(p \land q)$ | $(p \lor r)$
  1  |  0  |  1  |      0      |      1  
  0  |  0  |  1  |      0      |      1
  1  |  1  |  0  |      1      |      1
- 0  |  1  |  0  |      0      |      1
- 1  |  0  |  0  |      0      |      0
+ 0  |  1  |  0  |      0      |      0
+ 1  |  0  |  0  |      0      |      1
  0  |  0  |  0  |      0      |      0
  
 
@@ -156,8 +156,8 @@ $p$ | $q$ | $r$ | $(p \land q)$ | $(p \lor r)$ | $\neg(p \lor r)$
  1  |  0  |  1  |      0      |      1         | 0
  0  |  0  |  1  |      0      |      1         | 0 
  1  |  1  |  0  |      1      |      1         | 0
- 0  |  1  |  0  |      0      |      1         | 0
- 1  |  0  |  0  |      0      |      0         | 1
+ 0  |  1  |  0  |      0      |      0         | 1
+ 1  |  0  |  0  |      0      |      1         | 0
  0  |  0  |  0  |      0      |      0         | 1
  
  Por fim, podemos solucionar toda a expressão $((p \land q) \to \neg(p \lor r))$
@@ -169,8 +169,8 @@ $p$ | $q$ | $r$ | $(p \land q)$ | $(p \lor r)$ | $\neg(p \lor r)$
  1  |  0  |  1  |      0      |      1         | 0                 |  1
  0  |  0  |  1  |      0      |      1         | 0                 |  1
  1  |  1  |  0  |      1      |      1         | 0                 |  0
- 0  |  1  |  0  |      0      |      1         | 0                 |  1
- 1  |  0  |  0  |      0      |      0         | 1                 |  1
+ 0  |  1  |  0  |      0      |      0         | 1                 |  1
+ 1  |  0  |  0  |      0      |      1         | 0                 |  1
  0  |  0  |  0  |      0      |      0         | 1                 |  1
 
 É muito fácil de errar esse tipo de cálculo, principalmente quando temos mais que 3 proposições atômicas. Mas existe um jeito de fazer essa cálculo na linguagem R.
