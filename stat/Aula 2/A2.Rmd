@@ -1,0 +1,426 @@
+---
+title: 'Aula 2: A Linguagem R'
+author: "João Paulo Lazzarini Cyrino"
+date: "Agosto de 2020"
+output:
+  html_document:
+      toc: true
+      toc_float:
+        collapsed: true
+        smooth_scroll: false
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A Linguagem R
+
+R é uma linguagem de programação desenvolvida por estatísticos para estatística. Foi desenvolvida no ano 2000 por Ross Ihaka e por Robert Gentleman, professores do Departamento de Estatística da Universidade de Auckland (Nova Zelândia).
+
+É uma linguagem bastante poderosa para finalidades científicas e acabou por ser uma das mais utilizadas nos departamentos de várias áreas acadêmicas. Além disso, ela é bastante utilizada na indústria para tarefas relacionadas a estatística, ciência de dados e inteligência artificial. 
+
+Há atulamente um debate sobre se devemos utilizar uma outra linguagem, denominada Python. A linguagem Python é mais genérica, podendo ter mais aplicações que R. No entanto, para finalidades acadêmicas, R parece trazer mais facilidades: 
+
+* R possui um ambiente de trabalho denominado RStudio, que inclui uma série de facilidades.
+* A ferramenta RMarkdown permite criar documentos (como este), enquanto estamos programando. Ou seja, podemos escrever o artigo enquanto conduzimos o estudo.
+* R é muito simples para conduzir testes estatísticos, com muitas funcionalidades vindas de fábrica.
+* R possui recursos para visualização (gráficos) muito superiores e mais intuitivos.
+
+Se você estiver realmente interessado em linguística computacional, principalmente fora do escopo puramente acadêmico, recomendamos aprender Python também. Para as finalidades exclusivamente científicas, R será uma grande parceira e te ajudará imensamente com suas descobertas e teses/dissertações/artigos, etc. 
+
+
+### Instalando R e RStudio
+
+Atualmente é impossível dissociar R de seu ambiente de trabalho, a plataforma RStudio. Por essa razão, precisamos instalar os dois programas: a linguagem R e a plataforma RStudio. 
+
+Para baixar a linguagem R você pode clicar em um dos links abaixo, de acordo com seu sistema:
+
+* Windows: <https://cran.r-project.org/bin/windows/base/>
+* Mac OSX: <https://cran.r-project.org/bin/macosx/>
+
+Assim que baixar, você deverá instalá-la antes de partir para baixar e instalar o RStudio. Uma vez instalada a linguagem R, você pode ir ao site <https://rstudio.com/products/rstudio/download/#download> e baixar a plataforma RStudio. Novamente, assim que baixar, instale a plataforma no seu computador. 
+
+A instalação tando da linguagem R como do RStudio devem ser fáceis e correrão sem maiores dificuldades. Em caso de problemas, você pode simplesmente digitar o problema no Google e certamente haverá uma solução para ele! Uma das grandes vantagens da linguagem R é sua **comunidade**: tanto os usuários como os mantenedores da linguagem são pessoas muito interessadas em ajudar, o que faz com que haja inúmeros recursos sobre a linguagem online. 
+
+### Importante! Como aprender a programar?
+
+Talvez seja sua primeira vez tentando aprender uma linguagem de programação. R é um tanto peculiar no sentido de ser mais objetiva e te levar a perder menos tempo com a criação de um programa e te permitir dedicar somente aos cálculos e análises do seu estudo. Mas, apesar dessa facilidade, isso não significa que será necessariamente fácil aprender a utilizar R e muito menos ter uma familiaridade total com a linguagem a ponto de se sentir plenamente confortável utilizando-a. 
+
+Programar é uma habilidade que se conquista com **muita** prática. Não adianta muito fazer cursos e apenas acompanhar o raciocínio do professor. É necessário tentar você mesmo e é necessário também querer explorar sozinho formas diferentes de resolver o problema. 
+
+Recomenda-se fortemente que, além de replicar mais de uma vez os códigos desse curso e estudá-los linha por linha, e além de fazer as atividades propostas, você também tente implementar esses conhecimentos em sua pesquisa atual. A forma como R funciona permite que você consiga integrar, com facilidade, o seu processo de pesquisa com o de programação. Por isso, gastar tempo praticando R a partir dos dados de sua pesquisa irá ser benéfico tanto para seu aprendizado de R como para sua pesquisa em si. 
+
+Outra coisa importante: acostume-se com não saber muita coisa e ter que pesquisar no google ou em documentos de referência como fazê-la. Nunca dominaremos totalmente os recursos todos da linguagem R, mas é importante aprender a aprender sobre eles. E também: **não se preocupe em memorizar todos os comandos, funções, etc. Isso pode ser bastante frustrante! Deixe que a prática se encarregue disso**. 
+
+## Programando em R (o básico)
+
+Aqui vamos cobrir alguns básicos de programação em R. Essa seção não é, nem de perto, um bom curso básico de R, mas é o suficiente para que você consiga acompanhar o que será feito nas próximas aulas. Ao final dela aponto alguns sites com mais cursos e recursos para você estender seu conhecimento. 
+
+Aprender uma linguagem de programação consiste, basicamente, em aprender:
+
+1. Tipos e estruturas de dados: o que podemos calcular/computar
+2. Operadores e Funções: os comandos que nos permitem realizar as operações com os dados
+3. Estruturas de Controle: como controlar o fluxo do algoritmo
+
+Aqui, no entanto, aprenderemos apenas os itens 1 e 2. Estruturas de controle em R são um tanto quanto desnecessárias a nível básico. No entanto, apresentaremos alguns elementos desse asssunto ao longo desse curso, conforme necessário. Mais importante que estruturas de controle é como visualizar gráficos, e isso está incluido brevemente aqui.
+
+### Tipos de Dados e Operações Básicas
+
+Em R estamos, normalmente, manipulando ou números ou categorias. Categorias costumam ser descritas por texto, como por exemplo "Categoria A", ou "Singular", ou mesmo algo mais codificado como "sg.pl". Por essa razão, em R manipulamos dados de dois tipos, basicamente: `numeric` e `character`. 
+
+A função `class` nos permite descobrir qual o tipo de um dado. Veja só o que acontece quando digitamos os seguintes comandos no console do R: (aviso - tudo aquilo que aparece depois de # é um comentário e não precisa ser digitado no console. Você pode colocar comentários no seu código à vontade para tornar as coisas mais fáceis de entender, a linguagem simplesmente os ignora na hora de executar seu programa)
+
+```{r}
+class(12) # descobrir em que tipo de dado o número 12 se enquadra
+```
+
+```{r}
+class("Abacate") # descobrir em que tipo de dado o texto "Abacate" se enquadra
+```
+
+Nota-se que dados do tipo `character` sempre são declarados utilizando aspas (podem ser duplas ou simples). Veja só o que acontece quando pedimos `class("12")` ao invés de `class(12)`:
+
+```{r}
+class("12")
+```
+
+Podemos armazenar nossos dados em variáveis, o que torna nosso trabalho muito prático. Fazemos isso utilizando os operadores `<-` e `->`:
+
+```{r}
+x <- 12 # x agora vale 12
+12 -> x # um outro jeito de escrever que x agora vale 12
+```
+
+Nomes de variáveis se diferenciam de caracteres por não terem aspas. Para não confundir com números, elas também não podem começar por números. Sugerimos utilizar nomes de variáveis que sejam fáceis de entender. Quando digitamos o nome da variável no console, ele nos retornará o seu valor:
+
+```{r}
+x
+```
+
+
+É interessante que no RStudio há uma janela (Environment) que mostra todas as variáveis criadas ao longo do trabalho e os seus respectivos valores. Isso ajuda a não se perder no fluxo de trabalho.
+
+Podemos fazer operações com dados numéricos como fazemos em matemática. Temos os operadores `+`, para soma, `-`, para subtração, `*` para multiplicação e `/` para divisão. Além disso podemos elevar um número *n* a uma potência *p* com `n**p` ou `n^p`. Também podemos tomar a raiz quadrada de um número *n* com a função `sqrt(n)`. Alguns exemplos abaixo:
+
+```{r}
+soma <- 23 + 7 # armazenando o resultado de 23 + 7 na variável soma. 
+# Vamos fazer isso com outras operações também
+subtr <- 30 - 23
+mult <- 2 * 56
+div <- 30/8.4 # repare que o . é o separador decimal
+quadrado <- 8^2
+raiz <- sqrt(16)
+```
+
+Podemos criar um vetor de números que nos retornará os resultados das operações acima. Fazemos isso assim:
+
+```{r}
+c(soma, subtr, mult, div, quadrado, raiz)
+```
+
+Vetores são estruturas de dados de uma dimensão. Eles aceitam dados de apenas um tipo (ou dados numéricos, ou de caracteres). Podemos armazená-los em variáveis da mesma forma que os demais dados. Vejamos algumas operações interessantes com vetores:
+
+```{r}
+# armazenando o vetor com as operações matemáticas na variável v
+v <- c(soma,subtr,mult,div,quadrado,raiz) 
+v # retornará o vetor
+```
+
+```{r}
+v[1] # retorna o primeiro elemento do vetor
+```
+
+```{r}
+v[3] <- 12 # insere o número 12 no terceiro elemento do vetor
+```
+
+```{r}
+v[1:4] # retorna os elementos de 1 a 4 no vetor
+```
+
+```{r}
+length(v) # retorna o tamanho do vetor
+```
+
+```{r}
+v[7] <- 7 # adiciona um novo elemento 7 no vetor
+length(v) # novo tamanho do vetor
+```
+
+```{r}
+v[length(v)+1] <- 8 # adiciona o número 8 ao final do vetor. 
+# Note como nos referimos à nova posição do vetor utilizando a função length() + 1. 
+# Encadear funções é muito comum em programação.
+v
+```
+
+```{r}
+# nomes para cada posição do vetor
+names(v) <- c('soma', 'sub', '12', 'div', 'quadrado', 'raiz', '7', '8') 
+v # veja como aparecem os nomes
+```
+
+```{r}
+v['quadrado'] # pedindo o elemento do vetor pelo nome
+```
+
+Manipular vetores é algo frequente quando estamos lidando com dados. Por enquanto, mais do que decorar as operações, se preocupe em entender o que está acontecendo. É interessante que podemos aplicar operações a todos os elementos dos vetores:
+
+```{r}
+par <- c(2,4,6,8,10)  # vetor de números pares
+par^2 # mostra os membros do vetor par elevados ao quadrado
+```
+
+```{r}
+par + 1 # adiciona 1 aos membros do vetor par
+```
+
+É importante entender que as operações sobre vetores geram um novo vetor e não alteram o vetor antigo. Se quisermos alterar o vetor já existente, devemos sobrescrevê-lo em sua respectiva variável:
+
+```{r}
+par <- par * 2 # vetor par agora ficou armazenado com seus valores multiplicados por 2
+par # exibir o novo conteúdo de par
+```
+
+Podemos construir uma tabelinha com dois vetores de comprimento igual através da função `cbind`:
+
+```{r}
+par <- c(2,4,6,8,10,12,14) # vetor par
+impar <- par - 1 # vetor impar subtraindo 1 de cada valor de par
+tabela <- cbind(impar,par) # tabela com duas colunas
+tabela
+```
+
+Essa tabela é também denominada `matrix` (matriz) em R. Note que cada coluna tem um nome emprestado da variável que formou essa coluna. Podemos alterar os nomes das colunas com a função `colnames`:
+
+```{r}
+colnames(tabela) <- c('x', 'x+1') # novos nomes para as colunas
+tabela
+```
+
+Podemos obter valores da tabela com a notação `[linha,coluna]`. Veja abaixo:
+
+```{r}
+tabela[3,2] # obter o valor da terceira linha, segunda coluna.
+```
+
+```{r}
+tabela[4,'x'] # obter o valor da quarta linha, coluna entitulada 'x'
+```
+
+```{r}
+tabela[,'x+1'] # obter todos os valores da coluna 'x+1'
+```
+
+```{r}
+tabela[2,] # obter todos os valores da linha 2
+```
+
+```{r}
+nrow(tabela) # número de linhas da tabela
+```
+
+```{r}
+ncol(tabela) # número de colunas da tabela
+```
+
+Um terceiro tipo de estrutura de dados, que reune as propriedades da matriz com algumas outras funcionalidades é o quadro de dados, ou `data.frame`. Trata-se, simplesmente, de uma tabela em que cada coluna pode ser de um tipo diferente de dado. Podemos converter nossa tabela em um `data.frame` da seguinte forma:
+
+```{r}
+tabela <- data.frame(tabela) # converte tabela em data.frame e a armazena novamente em tabela
+tabela
+```
+
+O quadro de dados é o que normalmente manipulamos em R. Podemos utilizar as mesmas funções que utilizamos na matriz para obter dados dele. Também podemos chamar cada coluna com a sintaxe `nome_da_tabela$nome_da_coluna`:
+
+```{r}
+tabela$x # pedindo a coluna x
+```
+
+```{r}
+# perceba que R mudou o nome da coluna x+1 da matriz para x.1 para evitar conflitos
+tabela$x.1 
+```
+
+Se quisermos criar uma nova coluna, podemos:
+
+```{r}
+tabela$x.2 <- tabela$x + 2 # nova coluna x.2 somando 2 aos valores da coluna x
+tabela # vamos ver como ficou a tabela agora
+```
+
+Parece bastante coisa, né? Mas acredite: manipular tabelas, matrizes e vetores em R é muito mais prático que em muitas linguagens de programação! Fica até mesmo mais fácil do que em Excel, depois que pegamos a prática. Na próxima aula aprenderemos a utilizar o pacote *tidyverse* para manipular dados, o que torna as coisas ainda mais fáceis. 
+
+Por enquanto apenas vimos operações para manipular dados numéricos. Há operações para manipular texto também, mas essas serão introduzidas ao longo do curso, conforme necessário. 
+
+Há um terceiro tipo importante de dado (há outros, mas eles derivam de alguma forma desses três), que é o tipo lógico. Esse tipo só permite os valores `TRUE` ou `FALSE`, correspondendo a verdadeiro e falso. Com isso podemos fazer operações lógicas em R, o que é de grande utilidade. 
+
+Uma dessas operações são as operações de igualdade, como `==` (igual a) e `!=` (diferente). Com elas podemos comparar valores. 
+
+```{r}
+1 != 2 # verifica se 1 é diferente de 2
+```
+
+```{r}
+1 == 2 # verifica se 1 é igual a 2
+```
+
+Podemos aplicar operações lógicas para valores de tabelas. Elas nos retornará um vetor ou matriz (conforme o caso) de valores lógicos:
+
+```{r}
+tabela == 5 # uma matriz com TRUE onde havia 5 na tabela
+```
+
+curiosamente, matematicamente os valores de TRUE podem ser somados como se fossem 1 e os de FALSE como se fossem 0. Dessa forma, podemos somar os valores verdadeiros da matriz obtendo a contagem de números 5 na tabela. Isso pode ser feito com a função `sum`, que soma os valores de uma matriz ou vetor:
+
+```{r}
+sum(tabela == 5) # conta quantas vezes 5 aparece na tabela
+```
+
+Da mesma forma, podemos utilizar a função de média `mean` para calcular a proporção de 5 na tabela. Isso será amplamente utilizado nas nossas análises.
+
+```{r}
+mean(tabela == 5) # proporção de números 5 na tabela
+```
+
+Apresentamos, aqui algumas operações básicas em R. Novamente, não se preocupe tanto em decorar, mas em tentar replicar e explorá-las (tentar fazer cálculos com outros valores, matrizes diferentes, etc). Essa prática é o que traz segurança no uso da ferramenta. 
+
+### Gráficos Básicos
+
+Na próxima aula veremos uma forma mais eficiente e flexível de como plotar gráficos em R. Aqui mostramos algumas funções gráficas fundamentais que podem ser úteis para visualização rápida de dados. 
+A primeira função é `hist`, que plota histogramas. Histogramas são gráficos de distribuição de frequências e são importantes para visualizar o que está ocorrendo com uma variável numérica. 
+
+```{r}
+# notas de uma turma
+notas <- c(3,3,4,2,5,5,5,6,6,7,8,9,8,8,8,10,5,5,6,2,2,1,3,3,4,5,7,7) 
+hist(notas) #histograma das notas 
+```
+
+Podemos criar gráficos de barras a partir de tabelas de frequência. Para criar uma tabela de frequências a partir de um vetor como, por exemplo, *notas*, utilizamos a função `table`:
+
+```{r}
+table(notas)
+```
+
+O gráfico de barras pode ser construido da seguinte forma:
+
+```{r}
+barplot(table(notas))
+```
+
+Gráficos de barras são ótimos para visualizar variáveis categóricas: 
+
+```{r}
+# Cores preferidas dos alunos de uma turma
+cores <- c('Azul','Azul','Rosa','Verde','Verde','Vermelho','Verde','Vermelho','Rosa','Bege') 
+t <- table(cores) # tabela de frequência das cores armazenada em t
+barplot(t)
+```
+
+Gráficos de pizza também podem ser plotados:
+
+```{r}
+pie(t)
+```
+
+Para mais de uma variável, podemos plotar gráficos de dispersão e de linhas com a função `plot`:
+
+```{r}
+v <- c(0,10,40,90,120,120,120,80,30,0) # velocidades de um carro
+t <- c(1,2,3,4,5,6,7,8,9,10) # instantes de medição
+plot(t,v, type='l') # plotar t no eixo x e v no eixo y, tipo de gráfico linha ('l')
+```
+
+```{r}
+iptu <- c(1250,900,850,2000,340,200,1900,500,100) # iptu anual do imóvel
+renda <- c(8,6,6,9,5,3,11,8,4) # renda familiar do morador em número de salários mínimos
+plot(iptu,renda) # gráfico de dispersão iptu x renda
+```
+
+Há várias opções que podem ser incluídas em cada um desses comandos de gráficos, seja para adicionar títulos ou cores, seja para sobrepor gráficos. Sugerimos, no entanto, que se utilize a técnica da próxima aula para plotar gráficos e deixe esses comandos mais para uma visualização rápida. 
+
+### Onde encontrar mais recursos
+
+Isso foi uma introdução bastante básica da linguagem R. Caso deseje se aprofundar mais na linguagem em si, recomendamos alguns sites com tutoriais:
+
+* Curso-R <http://material.curso-r.com/>
+* Estatística em R para linguistas (Profa. Lívia Oushiro Unicamp) <https://rpubs.com/oushiro/iel?fbclid=IwAR1R2ZU3WXQCZnvgAQO4NtkmLnCTh229oMM64koBPymHd30ccFgjbUKFyDk>
+* Tutorial R/RStudio <https://edisciplinas.usp.br/pluginfile.php/4883125/mod_resource/content/1/Tutorial.pdf>
+* R-Tutor (em inglês) <http://www.r-tutor.com/
+
+## Importando planilhas e juntando
+
+Importar planilhas do excel é algo que faremos com frequência ao trabalhar com R. O RStudio facilita isso com a funcionalidad Import Dataset, na janela Environment. Basta clicar no botão *Import Dataset* e escolher a opção *From Excel*. 
+
+### Juntando Planilhas
+
+Na aula passada baixamos duas planilhas do WALS: uma sobre flexão verbal (exercício para casa) e outra sobre tipo de marcação na oração. Se você fez tudo certo deve ter planilhas como as que estão nos arquivos *clause_marking.xls* e *verb_inflection.xls* na pasta dessa aula.
+
+Como os dados do WALS versam sobre uma única variável, normalmente, juntar planilhas para verificar correlaçoes entre essas variáveis é uma habilidade bastante importante. Podemos fazer isso com o R contanto que haja uma variável que identifique cada linha e que seja comum às duas planilhas. 
+
+No caso dos dados do WALS, essa variável corresponde à língua, já que cada observação é referente a uma língua. Dessa forma, queremos que as observações da língua *x* de uma planilha se alinhem às observações dessa mesma língua *x* de uma segunda planilha.
+
+Vamos carregar *clause_marking.xls* e *verb_inflection.xls*. Após carregar, podemos executar a função `str` para verificar a estrutura de cada tabela:
+
+```{r echo=FALSE}
+library(readxl)
+clause_marking <- read_excel("clause_marking.xls")
+verb_inflection <- read_excel("verb_inflection.xls")
+
+```
+
+```{r}
+str(clause_marking)
+```
+
+```{r}
+str(verb_inflection)
+```
+
+Ambas as tabelas possuem uma variável denominada *id*, com cada valor constituído por três letras. Trata-se do código de cada língua. Podemos utilizar essa variável *id* para juntar as duas tabelas. 
+
+Podemos ver também que as tabelas tem um número de línguas diferente: uma com 236 e outra com 145. Podemos optar por juntar somente as observações que possuem um *id* comum às duas tabelas: 
+
+```{r}
+cm.vi <- merge(clause_marking,verb_inflection,by='id') # Juntando as duas tabelas nos ids comuns
+str(cm.vi) # 136 observações
+```
+
+Vemos que a tabela resultante possui 136 observações. Ou seja, há 136 observações de línguas comuns às duas tabelas. Esse tipo de junção é conhecido por *inner join* no jargão de banco de dados. 
+
+Podemos juntar todas as entradas das duas tabelas. Dessa forma, aquelas línguas sem observação em um ou outro estudo ocorrerão com o valor NA (não disponível):
+
+```{r}
+cm.vi.tudo <- merge(clause_marking,verb_inflection,by='id',all=TRUE) #  opção all=TRUE
+str(cm.vi.tudo) # Estrutura da nova tabela
+```
+
+```{r}
+# Visualizar a tabela (colunas 1,2,5). Veja que haverá observações com valores <NA>.
+cm.vi.tudo[,c(1,2,5)] 
+```
+
+### Arquivo RDS
+
+Caso queiramos salvar a tabela nova para usar posteriormente em R podemos salvá-la em um tipo de arquivo de dados específico da linguagem R: o arquivo RDS. 
+
+```{r}
+saveRDS(cm.vi.tudo, file="cm_vi_tudo.rds")
+saveRDS(cm.vi, file = "cm_vi.rds")
+```
+
+Os arquivos ficarão disponíveis na sua pasta de trabalho. Para carregá-los no seu projeto, basta clicar neles no navegador do RStudio. Existe o comando `readRDS` também, para carregar o arquivo manualmente. 
+
+```{r}
+cm.vi.tudo <- readRDS(file="cm_vi_tudo.rds")
+cm.vi <- readRDS(file="cm_vi.rds")
+```
+
+## Concluindo
+
+Apresentamos aqui alguns dos fundamentos da linguagem R para trabalhar ao longo desse curso. Lembrando sempre que: o mais importante é praticar e não decorar as funções. Tome seu tempo para replicar os códigos ensinados nesta aula e tentar explorar, por conta própria, as funções com outros dados. 
+
+
+
