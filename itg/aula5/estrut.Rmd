@@ -1,0 +1,37 @@
+---
+title: "Estruturas Sintáticas"
+author: "João Paulo Lazzarini Cyrino"
+date: "27/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Argumentos contra a gramática markov
+
+Chomsky propõe o modelo de estrutura sintagmática frente a duas deficiências de se assumir que a gramática é uma máquina de estados finita (modelo markov). A primeira se relaciona com o fato de modelos estatísticos, em tese, não poderem gerar algo como "incolores ideias verdes dormem furiosamente", uma vez que essa frase -- apesar de estar de acordo com a gramática da língua -- é formada por bigramas que jamais seriam encontrados em algum corpus: incolores ideias, ideias verdes, verdes dormem, dormem furiosamente. 
+
+A segunda deficiência tem relação com tipos de língua que uma gramática markov não é capaz de gerar. Considerando línguas com apenas os símbolos *a* e *b*, as línguas abaixo seriam impossíveis se a gramática fosse um modelo markov (máquina de estados finitos):
+
+* *ab*, *aabb*, *aaabbb* - todoas as sentenças que contenham *n* ocorrências de *a* seguidas por *n* ocorrências de *b* e apenas estas sentenças.
+
+* *aa*, *bb*, *abba*, *baab*, *aaaa*, *bbbb*, *aabbaa*, *abbbba*, e todas as sentenças que consistam de uma sequência X seguida por uma imagem em espelho de X e apenas estas sentenças.
+
+* *aa*, *bb*, *abab*, *aaaa*, *bbbb*, *aabaab*, *abbabb*, e todas as sentenças que consistam de uma sequência X seguida pela mesma sequência X e apenas estas sentenças. 
+
+Uma gramática markov não conseguiria gerar essas línguas pois as regras que definem suas sentenças envolvem uma memória maior do que a de um único símbolo, ou a de um número fixo de símbolos. Na primeira, as sentenças dependem de uma regra envolvendo um número *n* variável de símbolos. Na segunda e na terceira, a regra envolve uma memória de uma sequência X qualquer, de tamanho também variável. Gramáticas markov sempre seguem um modelo de bigramas, tendo apenas memória do símbolo anterior. Mesmo modelos de trigramas, quadrigramas possuem a memória fixa e não variável de 3 e 4 símbolos respectivamente. 
+
+Nas línguas naturais encontramos instâncias em que regras como as acima seriam necessárias. Por exemplo frases como:
+
+* Se $S_1$, então $S_2$.
+* Ou $S_1$, ou $S_2$.
+* O homem que disse que $S_1$ está chegando hoje. 
+
+Considere que $S_1$ e $S_2$ são sentenças. Nesse caso, para que ocorra *então* depois de *se $S_1$* seria necessário que a gramática pudesse acessar o *se* que se encontra antes de $S_1$, de tamanho variável. Claramente isso não é possível em um modelo markov. O mesmo vale para a segunda e, de certa forma, para a terceira sentença.
+
+
+# Modelo de Estrutura Sintagmática
+
+
