@@ -2,12 +2,16 @@
 title: "Estruturas Sintáticas"
 author: "João Paulo Lazzarini Cyrino"
 date: "27/10/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Aqui estão algumas anotações de aspectos principais do que há no livro de Syntactic Structures e que não foram abordados no conteúdo de linguagens formais.
 
 ## Argumentos contra a gramática markov
 
@@ -34,4 +38,34 @@ Considere que $S_1$ e $S_2$ são sentenças. Nesse caso, para que ocorra *então
 
 # Modelo de Estrutura Sintagmática
 
+A alternativa para o modelo markov encontrada por Chomsky é a gramática de estrutura sintagmática. Essa gramática consiste, basicamente, de símbolos terminais, não-terminais e regras de substituição (reescrita ou produção). Para uma compreensão da formalização, ver o material sobre linguagens formais. 
+
+Sentenças são sequências de símbolos e uma língua é um conjunto de sentenças geradas por uma gramática. 
+
+A geração de sentenças se dá da seguinte forma:
+
+1. Toma-se um símbolo raiz (S) e substitua-o por símbolos de acordo com uma das regras de produção. 
+2. Toma-se os símbolos não-terminais e substitua-os de acordo com uma das regras de produção.
+3. A geração da sentença termina até que haja apenas símbolos terminais
+
+Línguas naturais são, normalmente, modeladas pelo que se chama de Gramáticas Livres de Contexto ou *Context-free Grammars (CFG)*. Nessas gramáticas, as regras de substituição assumem que o lado esquerdo contenha apenas um símbolo não-terminal e o lado direito contenha qualquer sequência de símbolos (terminais ou não-terminais).
+
+A regra de produção abaixo ilustra isso. Um símbolo não-terminal raiz (S) pode ser substituido por uma sequência de dois símbolos não-terminais: SN e SV (referem-se a sintagma nominal e sintagma verbal, respectivamente)
+
+$$S \to SN \cdot SV $$
+
+# O Modelo Transformacional
+
+O modelo transformacional é o modelo de Gramática Gerativa lançado por Chomsky em 1957 em Estruturas Sintáticas. Após discorrer sobre a importância de um modelo de estrutura sintagmática, tal como a *gramática livre de contexto* mencionada acima, Chomsky lança mão das **transformações** para aumentar o poder descritivo das *gramáticas livres de contexto*.
+
+Uma *transformação* é um tipo de regra que se aplica a uma sentença gerada por uma gramática gerativa (livre de contexto, no caso) e a transforma em outra sentença. Exemplos são transformar sentenças declarativas em interrogativas, ativas em passivas, etc. 
+
+Elas são definidas como no exemplo abaixo:
+
+**Regra de voz Passiva**
+
+* Análise estrutural: $SN - Aux - V - SN$
+* Mudança estrutural: $X_1 - X_2 - X_3 - X_4 \to X_4 - X_2 + be + en - X_3 - by + X_1$
+
+*Transformações* serão importantes ao longo da história da Teoria Gerativa. Embora as motivações para essas transformações sejam fracas dentro do modelo nesse momento inicial, elas terão melhores explicações nos modelos seguintes de Teoria Gerativa. 
 
