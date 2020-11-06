@@ -1,0 +1,27 @@
+---
+title: "Aspectos de uma Teoria Sintática I"
+author: "João Paulo Lazzarini Cyrino"
+date: "05/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Competência vs. Performance
+
+## O estudo da gramática
+
+## Aceitabilidade vs Gramaticalidade
+
+## Organização de uma gramática gerativa
+
+## Adequação descritiva e adequação explicativa
+
+## Universais formais e substantivos
+
+## Empirismo vs. racionalismo no aprendizado de línguas
+
+## Capacidade gerativa forte vs fraca
+
