@@ -1,0 +1,36 @@
+---
+title: "Avaliação"
+author: "João Paulo Lazzarini Cyrino"
+date: "26/11/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Avaliação de PPGLINC 13
+
+Escolha uma das 4 atividades abaixo. O texto desenvolvido deve ter em torno de 1500 palavras e ser entregue por email (**jpcyrino@gmail.com**) no formato PDF. 
+
+**Data de entrega: 11/12/2020**
+
+**Orientações de Formato:**
+
+* Espaçamento simples.
+* Não usar citações longas. 
+* Faça referências no próprio texto: "Em Syntactic Structures, Chomsky afirma que ...".
+
+**Atividades (escolha uma):**
+
+1) Discorra sobre a importância das tranformações nos modelos de Syntactic Structures e Aspects, e o que é análogo a elas nos modelos de Regência e Ligação e no Programa Minimalista. 
+
+2) A partir de exemplos, discuta as limitações de uma gramática de estados finitos (Markov) e como uma gramática de estruturas sintagmáticas pode ser melhor para representar as línguas naturais. 
+
+3) Faça um panorama sobre a estrutura profunda e superficial e sua relação com a semântica e as transformações ao longo da história da Teoria Gerativa. 
+
+4) Explique os conceitos formais de língua e gramática e relacione-os ao objetivo da Teoria Linguística proposto por Chomsky em Syntactic Structures e à noção de Competência Linguística apresentada em Aspects. 
+
+5) Discorra sobre a teoria das Linguagens Formais, estabelecendo relações com a Teoria dos Conjuntos e fazendo referência com exemplos às hierarquias de Chomsky. Dê ênfase às gramáticas livres de contexto e sua importância para descrever línguas naturais. 
