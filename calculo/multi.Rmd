@@ -1,0 +1,774 @@
+---
+title: "Cálculo Multivariado"
+author: "João Paulo Lazzarini Cyrino"
+date: "26/11/2020"
+output:
+  html_document:
+    df_print: kable
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## Funções com mais de uma variável
+
+Uma função $f$ de duas variáveis reais é uma relação que associa cada par ordenado $(x,y)$ de um conjunto $A$, domínio, a um único valor real $f(x,y)$, ou seja: 
+
+$$f:A \subset R^2 \to R $$
+
+Funções de duas variáveis podem ser esboçadas com gráficos de curvas de nível. Consideremos a seguinte função:
+
+$$ f(x) = x^2 + y^2 $$
+
+Podemos representá-la em R com os valores dentro de um intervalo tal como [-10,10] para os valores de $x$ e $y$. Para isso, criamos uma variável contendo uma sequência de 21 números dentro desse intervalo: 
+
+```{r}
+s <- seq(-10,10, length.out=21)
+```
+
+Agora, criamos um data frame *f* com o produto cartesiano de $s \times s$. Nomeamos as colunas desse data frame com *x* e *y*:
+
+```{r}
+f <- expand.grid(s,s)
+colnames(f) <- c('x','y')
+```
+
+Agora que todas as combinações possíveis dos valores de x e y, adicionamos em *f* os valores para z:
+
+```{r}
+f$z <- f$x**2 + f$y**2
+```
+
+Podemos visualizar as curvas de nível para essa função utilizando o atributo *geom_contour()* do pacote *ggplot2*:
+
+```{r}
+ggplot(f, aes(x,y,z=z)) +
+  geom_contour() +
+  labs(title="f(x,y) em curvas de nível")
+```
+
+Com *geom_contour_filled()* podemos ter a visualização com cores para cada faixa de valor de $z$:
+
+```{r}
+ggplot(f, aes(x,y,z=z)) +
+  geom_contour_filled() +
+  labs(title="f(x,y) em curvas de nível")
+```
+
+Também podemos utilizar *geom_contour()* junto com *geom_raster()*:
+
+```{r}
+ggplot(f, aes(x,y,z=z)) +
+  geom_raster(aes(fill=z)) +
+  geom_contour(colour="white") +
+  labs(title="f(x,y) em raster")
+```
+
+## Derivadas Direcionais e Parciais
+
+A derivada de uma função multivariada se dá em um ponto $(x_0,y_0)$ de um vetor unitário $u = <a,b>$:
+
+$$D_u f(x_0,y_0) = \lim_{h\to 0} \frac{f(x_0 + ha,y_0 + hb) - f(x_0,y_0)}{h}$$
+
+Tomando a função $f(x,y) = x^2 + y^2$ no ponto $(1,1)$, podemos ter a derivada da seguinte forma: 
+
+$$D_u f(1,1) = \lim{_h\to 0} \frac{f(1+ha,1+hb)-f(1,1)}{h} = 2a + 2b$$
+
+Supondo que a direção desejada seja dada pelo vetor $v = <-1,1>$, para obter o vetor unitário $u$ precisamos normalizá-lo:
+
+$$u = \frac{(a,b)}{\sqrt{a^2 + b^2}} = \frac{(-1,1)}{\sqrt{(-1)^2 + 1^2}}=\left(\frac{-1}{\sqrt{2}},\frac{1}{\sqrt{2}}\right)$$
+Dessa forma:
+
+$$ D_u f(1,1) = 2\left(\frac{-1}{\sqrt{2}}\right) + 2\left(\frac{-1}{\sqrt{2}}\right) = 0$$
+
+### Derivadas parciais
+
+Quando o vetor $u$ é $<1,0>$ ou $<0,1>$, temos uma derivada de $f$ em relação à $x$ ou $y$ respectivamente. Essas derivadas são denominadas derivadas parciais. Temos então: 
+
+$$D_{<1,0>} f = f_x = \frac{\partial f}{\partial x}$$
+
+$e$
+
+$$D_{<0,1>} f = f_y = \frac{\partial f}{\partial y}$$
+
+Solucionar derivadas parciais é bastante simples, basta tratar a variável que não é derivada como uma constante. Por exemplo, para a função $f(x,y) = x^2 + y^2$ temos:
+
+$$f_x = \frac{\partial(x^2 + y^2)}{\partial x}= 2x $$
+
+$e$
+
+$$f_y = \frac{\partial(x^2 + y^2)}{\partial y}= 2y $$
+
+### Nabla: gradiente da função
+
+É possível entender a derivada direcional considerando $u = <a,b>$ como:
+
+$$D_u f(x,y) = f_x(x,y)a + f_y(x,y)b $$
+
+Isso pode ser compreendido como o produto cartesiano do vetor $(f_x(x,y),f_y(x,y))$ com o vetor $u = (a,b)$:
+
+$$D_u f(x,y) = \left(\frac{\partial f(x,y)}{\partial x},\frac{\partial f(x,y)}{\partial y}\right) \cdot u$$
+
+O vetor $(f_x(x,y),f_y(x,y))$ possui uma nomenclatura especial $\nabla f$, que é entendido como o gradiente da função. O nome para o símbolo $\nabla$ é *nabla*. 
+
+$$\nabla f(x,y) = <f_x(x,y),f_y(x,y)> = \left(\frac{\partial f(x,y)}{\partial x},\frac{\partial f(x,y)}{\partial y}\right) $$
+
+Dessa forma, a derivada direcional de uma função $f$ pode ser definida como $D_u f = \nabla f \cdot u$
+
+### Aplicação
+
+Derivadas direcionais são úteis para determinarmos em que direção uma função $f$ varia mais rapidamente e qual é essa taxa de variação. 
+
+**Teorema: ** se $f$ é uma função de duas variáveis e $f_x$ e $f_y$ existam e sejam contínuas, o valor máximo da derivada direcional $D_u f$ é o módulo do vetor $\nabla f$ e ocorre quando $u$ tem a mesma direção de $\nabla f$. 
+
+Tomemos a função $f(x,y) = x^2 + 3y^2$ que represente a distribuição de temperatura no plano $xy$ de um material. Vamos representar isso graficamente também:
+
+```{r}
+# criando a sequência de números para x e y:
+s <- seq(0,10,length.out=101)
+# criando o data frame para a função f:
+f <- expand.grid(s,s)
+colnames(f) <- c('x','y')
+# criando o valor da temperatura:
+f$temp <- f$x**2 + 3*f$y**2
+# plotando com geom_raster, ajustando a visualização para temperaturas altas em vermelho.
+ggplot(f, aes(x,y,fill=temp)) +
+  geom_raster() +
+  geom_contour(aes(z=temp),colour="white") +
+  scale_fill_gradient(low="blue", high="red") +
+  labs(title="Distribuição de temperatura no plano de um material")
+```
+
+No ponto $(1,1)$, qual a direção e taxa de maior aumento da temperatura? Para saber isso, basta calcular $\nabla f(1,1)$ e seu respectivo módulo. 
+
+Para a direção:
+
+$$\nabla f(x,y) = <f_x(x,y),f_y(x,y)> = <2x,6y>$$
+
+$$\nabla f(1,1) = <2,6>$$
+
+Para a taxa:
+
+$$|\nabla f(1,1)| = |<2,6>| = 2\sqrt{10} \approx 6,3^oC/cm$$
+Abaixo mostramos com representar graficamente o vetor $\nabla f(1,1)$ no plano da função $f(x,y)$
+
+```{r}
+ggplot(f, aes(x,y,fill=temp)) +
+  geom_raster() +
+  scale_fill_gradient(low="blue", high="red") +
+  geom_contour(aes(z=temp),colour="white") +
+  geom_segment(aes(x=1,y=1,xend=3,yend=7), color="white", arrow = arrow()) +
+  labs(title="Distribuição de temperatura no plano de um material")
+```
+
+Um problema parecido seria considerar que a temperatura em um plano seria dada pela função abaixo:
+
+$$f(x,y,z) = 1 + x^2 + 2y^2 + 3z^2$$
+
+Qual seria a taxa de aumento de temperatura nesse material no ponto (-1,1,0)? A resposta nesse caso é $|\nabla f(-1,1,0)|$. Para chegar a isso precisamos das derivadas parciais $\frac{\partial f}{\partial x}$, $\frac{\partial f}{\partial y}$ e $\frac{\partial f}{\partial z}$:
+
+$$\frac{\partial}{\partial x}(1 + x^2 + 2y^2 + 3z^2) = 2x$$
+
+$$\frac{\partial}{\partial y}(1 + x^2 + 2y^2 + 3z^2) = 4y$$
+$$\frac{\partial}{\partial z}(1 + x^2 + 2y^2 + 3z^2) = 6z$$
+
+
+Dessa forma:
+
+$$\nabla f(-1,1,0) = <2(-1), 4(1), 6(0)> = <-2,4,0>$$
+Para saber a taxa, temos que calcular $|(-2,4,0)|$:
+
+$$|(-2,4,0)| = \sqrt{(-2)^2 + 4^2 + 0^2} = \sqrt{20} \approx 4,47$$
+
+### Regra de Cadeia
+
+Supondo que uma função $f(x,y)$ seja, na verdade, $f(g(t),h(t))$. Nesse caso, temos a seguinte solução de sua derivada:
+
+$$\frac{df}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt}$$
+
+Por exemplo, se $f(x,y) = x^2y + 4xy^3$ e $x = \sin{2t}$ e $y = \cos{t}$, como calcular $\frac{df}{dt}$?
+
+Nesse caso, fazemos: 
+
+$$(2xy + 4y^3)(2\cos{2t}) + (x^2 + 12xy^2)(-\sin{t})$$
+E prosseguimos a álgebra desse ponto, o que é suprimido aqui.
+
+Quando, no entanto temos $f(x,y) = f(g(s,t),h(s,t))$, derivamos a função $f$ em relação a cada variável $s$ e $t$:
+
+$$\frac{\partial f}{\partial s} = \frac{\partial f}{\partial x}\frac{\partial x}{\partial s} + \frac{\partial f}{\partial y}\frac{\partial y}{\partial s}$$
+
+$$\frac{\partial f}{\partial t} = \frac{\partial f}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial f}{\partial y}\frac{\partial y}{\partial t}$$
+
+## Integral Dupla
+
+Da mesma forma que podemos calcular derivadas parciais, considerando as demais variáveis de uma função como constantes, podemos utilizar a mesma estratégia em integrais. No exemplo abaixo resolvemos a integral de uma função de duas variáveis em relação à variável $x$:
+
+$$\int 4x^3y^2dx = 4y^2\int x^3dx = 4y^2\left(\frac{x^4}{4}\right) + C = y^2x^4 + C$$
+
+Podemos também calcular a integral dessa função em relação à variável $y$:
+
+$$\int 4x^3y^2dy = 4x^3\int y^2dy = 4x^3\left(\frac{y^3}{3}\right) + C = \frac{4y^3x^3}{3} + C$$
+
+Quando falamos sobre integrais definidas, no entanto, a coisa se complica um pouco mais. Consideremos a integral definida $\int_a^b f(x)dx$. Essa integral de uma variável equivale à área ocupada entre os valores de f(x) e o eixo x do gráfico nos intervalos de $x$ entre $a$ e $b$. Por exemplo, vamos tomar a função $f(x) = x^3$ e sua integral definida entre os valores de $x=0$ e $x=3$:
+
+$$\int_0^3 x^3dx = \left[\frac{(3)^4}{4}\right]-\left[\frac{(0)^4}{4}\right] = 20,25$$
+
+Esse valor equivale à área sob a curva do gráfico de $f(x)$ entre $x=0$ e $x=3$, conforme ilustrado abaixo:
+
+```{r}
+s <- seq(-2,5)
+ggplot(data.frame(s),aes(x=s)) +
+  stat_function(fun=function(x){x**3},
+                geom="line") +
+  stat_function(fun=function(x){x**3},
+                geom="area",
+                xlim=c(0,3)) +
+  xlim(-1,4) +
+  geom_text(aes(x=2,y=2,label="Área = 20,25"), colour="white") +
+  labs(x="x",y="f(x)",title="Área correspondente à integral de f(x) em x=[0,3]")
+```
+
+Para uma função de duas variáveis podemos utilizar integrais definidas para calcular volumes. Nesse caso utilizamos as **integrais duplas**. Há uma série de métodos para trabalhar com essas integrais, portanto, vamos passo a passo. 
+
+### Integrais Duplas em Áreas Retangulares
+
+Vamos definir uma área retangular $R = [a,b] \times [c,d]$ para a função $f(x,y)$. Se dividirmos o intervalo $[a,b]$ em $m$ intervalos $[x_{i-1},x_i]$ de mesmo comprimento, o comprimento de cada intervalo se dá por $\Delta x=\frac{(b-a)}{m}$. Da mesma forma podemos dividir $[c,d]$ em $n$ intervalos $[y_{j-1},y_j]$ tendo $\Delta y = \frac{(d-c)}{n}$. Sabendo disso, o volume da região $S$ abaixo da curva dada por $f$ definida em $R$ é:
+
+$$V = \lim_{n,m\to\infty}\sum_{i=1}^m\sum_{j=1}^nf(x^*,y^*)\Delta A$$
+
+onde: 
+
+- $(x^*,y^*)$ é um ponto arbitrário de cada $R_{ij} = [x_{i-1},x_i] \times [y_{j-1},y_j]$.
+- $\Delta A = \Delta x \Delta y$
+
+Disso podemos generalizar a integral dupla, definida para um retângulo $R$:
+
+$$\int\int_Rf(x,y)\Delta A$$
+Vamos tomar um exemplo concreto. A função $f(x,y) = \sqrt{1-x^2}$ definida no retângulo $R = [-1,1] \times [-2,2]$ tem o volume definido pela integral dupla abaixo:
+
+$$\int\int_R\sqrt{1-x^2}\Delta A$$
+
+Podemos solucionar essa integral considerando, primeiramente, $x$ como uma constante para o intervalo $y = [-2,2]$. Assim, resolvemos $\int_{-2}^2 \sqrt{1-x^2}dy$. Essa integral será uma função de $x$ que podemos definir como $A(x)$ que deverá ser integrada posteriormente em $\int_{-1}^1A(x)dx$. Primeiro solucionamos a primeira integral. Vamos obter a integral indefinida para a variável $y$ da função $\sqrt{1-x^2}$:
+
+$$\int \sqrt{1-x^2}dy = y\sqrt{1-x^2} + C$$
+
+Agora, passemos para a definida:
+
+$$\int_{-2}^2 \sqrt{1-x^2}dy = (2\sqrt{1-x^2}) - (-2\sqrt{1-x^2}) = 4\sqrt{1-x^2}$$
+Considerando que $A(x)= 4\sqrt{1-x^2}$, integramos agora $\int_{-1}^{1}A(x)dx$. Faremos primeiro a integral indefinida:
+
+$$\int 4\sqrt{1-x^2} dx = 2\arcsin \left(x\right)+\sin \left(2\arcsin \left(x\right)\right)+C$$
+Resolvendo a definida temos:
+
+$$[2\arcsin(1) + \sin(2\arcsin(1))] - [2\arcsin(-1) + \sin(2\arcsin(1))] = $$
+$$[\pi + \sin(\pi)] - [-\pi + \sin(-\pi)] = \pi + \pi = 2\pi$$
+
+Algo que pode facilitar os cálculos é o *Teorema de Fubini*, que nos dá algumas relações de igualdade entre as integrais:
+
+**Teorema de Fubini**
+
+$$\int\int_Rf(x,y)dA = \int_a^b\int_c^df(x,y)dydx = \int_c^d\int_a^bf(x,y)dxdy$$
+
+### Integrais Duplas sobre Regiões Gerais
+
+Anteriormente calculamos integrais duplas para funções definidas em uma região retangular. Na maior parte das vezes, no entanto, a região que precisaremos calcular não será retangular. Nesse caso precisamos utilizar outra técnica. 
+
+Existem dois tipos de regiões que podemos utilizar. A primeira está ilustrada abaixo: 
+
+```{r, echo=FALSE, warning=FALSE}
+dat <- data.frame(x=seq(0,5,length.out=101))
+dat$h <- sapply(dat$x, FUN=function(x){.2*x**2})
+dat$g <- sapply(dat$x, FUN=function(x){log(x,base=1.5)})
+
+ggplot(dat, aes(x=x,y=g)) +
+  geom_line(aes(y=h),color="blue") +
+  geom_line(aes(y=g),color="red") +
+  geom_ribbon(aes(xmin=2,xmax=4,ymin=h,ymax=g),alpha=.5) +
+  geom_text(aes(x=3,y=3,label="g(x)")) +
+  geom_text(aes(x=3,y=1,label="h(x)")) +
+  xlim(2,4) +
+  ylim(0,5) +
+  labs(x="x",y="y",title="Área entre funções no intervalo x=[2,4]")
+```
+
+Nesse caso, temos uma área definida entre intervalos da variável $x$ em duas funções que mapeiam $x$ a $y$, $y=g(x)$ e $y=h(x)$. O outro tipo de região é o contrário, a área é definida entre intervalos da variável $y$ em duas funções que mapeiam $y$ a $x$, por exemplo $x=c(y)$ e $x=d(y)$.
+
+No gráfico acima, vamos chamar a área de $D$. Queremos saber, justamente:
+
+$$\int\int_Df(x,y)dA$$
+
+Para isso, precisamos especificar os valores de D. Utilizamos a definição de conjunto:
+
+$$D = \{(x,y)|2\leq x \leq 4, h(x) \leq y \leq g(x)\}$$
+Nesse caso, a integral dupla deve ser calculada da seguinte forma:
+
+$$\int_2^4\int_{h(x)}^{g(x)}f(x,y)dydx$$
+
+Quando temos o segundo tipo de região, determinado por uma área entre funções que mapeiam $y$ a $x$, temos a seguinte definição de $D$:
+
+$$D= \{(x,y)| c(y) \leq x \leq d(y), 2 \leq y \leq 4\}$$
+
+A integral dupla deve ser calculada da seguinte forma:
+
+$$\int_2^4\int_{c(y)}^{d(y)}f(x,y)dxdy$$
+
+
+**Exemplo 1**:
+
+$$\int\int_D e^{\frac{x}{y}}dA, D = \{(x,y)|1\leq y \leq 2, y \leq x \leq y^3\}$$
+
+Nesse caso temos que D é uma região do tipo 2, em que $y$ é determinado por intervalos numéricos e $x$ por funções. Dessa forma a resolução:
+
+$$\int_1^2\int_y^{y^3}e^{\frac{x}{y}}dxdy = \int_1^2ye^{\frac{x}{y}}|_y^{y^3}dy = \int_1^2ye^{y^2}-yedy = $$
+
+$$\left(\frac{1}{2}e^{y^2}-\frac{1}{2}y^2e\right)|_1^2 = \frac{1}{2}e^4 - 2e$$
+
+### Integrais em Coordenadas Polares
+
+Algumas vezes utilizar as funções definidas no plano cartesiano pode ser mais trabalhoso. Especialmente quando a área desejada se assemelha a uma fatia ou parte de um círculo. Nesse caso, podemos trocar o sistema de coordenadas do cartesiano para as coordenadas polares. 
+
+Nas coordenadas polares, um ponto é definido em termos de um raio $r$ e um ângulo $\theta$. Para converter uma coordenada cartesiana em coordenada polar utilizamos as seguintes fórmulas:
+
+- $x = r\cos\theta$
+- $y = y\sin\theta$
+- $r^2 = x^2 + y^2$
+
+Dessa forma, uma integral dupla na região D pode ser reescrita da seguinte forma em coordenadas polares:
+
+$$\int\int_D f(x,y) dA = \int\int_D f(r\cos\theta,r\sin\theta)rdrd\theta$$
+Vamos calcular o volume de um objeto definido entre o plano $z = 0$ e o paraboloide $z = 1 - x^2 - y^2$. Sabemos que $z = 1 - x^2 - y^2$ quando $z = 0$ define uma círculo de raio $r = 1$. Dessa forma, temos que a região de nossa função é: 
+
+$$P = \{(r,\theta)| 0 \leq r \leq 1, 0 \leq \theta \leq 2\pi \}$$
+
+Sendo nossa função $z = 1 - x^2 - y^2$, podemos defini-la em termos de coordenadas polares:
+
+$$z = 1 - r^2\cos^2\theta - r^2\sin^2\theta$$
+Dessa forma, calculamos a integral dupla:
+
+$$\int\int_P 1-r^2\cos^2\theta - r^2\sin^2\theta rdrd\theta$$
+
+$$\int_0^1 1 - r^2\cos^2\theta - r^2\sin^2\theta rdr = \frac{1}{4}$$
+
+$$\int_0^{2\pi} \frac{1}{4} d\theta = \frac{\pi}{2}$$
+
+
+## Equações Diferenciais Ordinárias
+
+Equações diferenciais ordinárias (EDOs) são equações envolvendo derivadas de funções. Quando temos equações envolvendo derivadas parciais, aí estamos lidando com equações diferenciais parciais (EDPs). 
+
+EDOs e EDPs são muito importantes dada sua vasta aplicabilidade. Podemos modelar diversos fenômenos físicos em termos dessas equações. Aqui vou ilustrar com o exmplo de um objeto em queda.
+
+Suponhamos que tenhamos um objeto de massa $m$ no ar. Nele atuam as forças $F_G$, referente à gravidade e $F_A$, referente à resistência do ar. Ambas são opostas. $F_G$ está direcionada para baixo e $F_A$, para cima. Vamos assumir que forças no sentido de $F_G$, para baixo, possuem valores positivos, e forças no sentido de $F_A$, para cima, possuem valores negativos.
+
+Vamos considerar duas coisas. Em primeiro lugar, a *Segunda Lei de Newton* que diz que: 
+
+$$F = ma$$
+Ou seja, qualquer força pode ser definida pela massa vezes a aceleração. Nesse caso, temos a definição de força em função da variável aceleração $a$. Podemos, no entanto, ser um pouco mais detalhistas e estabelecer que F pode ser uma função da velocidade $\upsilon$ e do tempo $t$. Isso porque a aceleração $a$ é a derivada da velocidade em função do tempo. Dessa forma:
+
+$$F(t,\upsilon) = m\frac{d\upsilon}{dt}$$ 
+
+Voltando ao nosso objeto, sabemos que sobre ele atuam as duas forças $F_G$ e $F_A$, e, como são opostas, temos que a resultante delas é $F_G - F_A$. Podemos reescrever $F_G$ como o produto da massa $m$ e a aceleração da gravidade $g$ (normalmente considerado como $9,8m/s^2$). Sobre $F_A$, vamos considerar que ela é proporcional à velocidade $\upsilon$ do objeto, assumindo que ela se dê pelo produto $\gamma\upsilon$, em que $\gamma$ é uma constante maior que zero. Dessa forma temos que:
+
+$$m\frac{d\upsilon}{dt} = mg - \gamma\upsilon$$
+
+Vamos simplificar a relação dividindo pela massa: 
+
+$$\frac{d\upsilon}{dt} = g - \frac{\gamma\upsilon}{m}$$
+
+Acima temos uma equação diferencial que, quando resolvida, nos dá a velocidade de queda de um objeto de massa $m$ que possui gravidade e resistência do ar atuando sobre ele. 
+
+Muito bem, vamos supor que nosso objeto tenha massa $m = 2kg$, a constante de resistência do ar seja $\gamma = 0,392$ e que a gravidade seja $g = 9,8m/s^2$. Nesse caso temos:
+
+$$\frac{d\upsilon}{dt} = 9.8 - 0,196\upsilon$$
+
+Vamos supor que, em um determinado instante $t$ a velocidade do objeto seja de $30m/s$. Nesse caso temos:
+
+$$\frac{d\upsilon}{dt} = 9.8 - 0,196(30) = 3,92$$
+
+Isso significa que no instante $t$ a velocidade está aumentando em 3,92m/s. Interessante, não?
+
+Agora, vamos considerar que no instante seguinte a velocidade aumentou para $33,92m/s$. Dessa forma temos: 
+
+$$\frac{d\upsilon}{dt} = 9.8 - 0,196(33,92) = 3,15$$
+
+O que percebemos com isso é que a cada instante a aceleração tende a diminuir. Curiosamente, quando temos $\upsilon = 50$, $\frac{d\upsilon}{dt} = 0$, ou seja, não há variação na velocidade. 
+
+Considerando que a velocidade é de $30m/s$ no instante $t=0s$, vamos ver o que ocorre nos próximos $50s$:
+
+```{r}
+# primeira velocidade
+v <- c(30)
+# primeira aceleração
+dvs <- c(0)
+# atualização da aceleração de acordo com o tempo
+# v = vetor de velocidades
+# dvs = vetor de acelerações
+for (t in seq(1,49)) {
+  dv <- 9.8 - 0.196*v[t]
+  v[t+1] <- v[t]+dv
+  dvs[t+1] <- dv
+}
+```
+O gráfico abaixo mostra a variação da velocidade em relação ao tempo. Como podemos ver, quando a velocidade atinge cerca de $50m/s$, ela deixa de aumentar. 
+
+```{r}
+ggplot(data.frame(t = c(1:50), v, dvs), aes(x=t, y=v)) +
+  geom_line()
+```
+
+Podemos também criar um Campo de Direções bastante rudimentar para ilustrar o que descreve nossa equação diferencial. 
+
+```{r}
+# Primeiro vamos criar uma lista de velocidades e outra de tempos:
+v <- seq(-10,50,by=10)
+t <- seq(1,50)
+# Agora vamos criar uma tabela que combine os tempos e as velocidades:
+tab <- expand.grid(t,v)
+colnames(tab) <- c('t','v')
+# Aplicamos v à equação, criando a coluna d da tabela:
+tab$d <- sapply(tab$v, FUN= function(x){9.8 - 0.196*x})
+# Agora plotamos o gráfico:
+ggplot(tab, aes(x=t,y=v)) +
+  geom_segment(aes(xend=t+.5,yend=v+d)) +
+  labs(title="Campo de direções para a queda de um objeto")
+```
+
+Esse é o poder das equações diferenciais, elas permitem que nós modelemos a complexidade de um fenômeno tal como a velocidade de queda de um objeto. 
+
+### Solucionando Equações Diferenciais de Primeira Ordem
+
+Solucionar equações diferenciais é, basicamente, obter uma função. Ou seja, lembrando da equação passada, queremos resolvê-la para obter o seguinte:
+
+$$\frac{d\upsilon}{dt} = 9,8 - 0.196\upsilon \to \upsilon(t) = 50 + ce^{-0.196t}$$
+
+Ou seja, a partir da equação diferencial obtemos a função exponencial que descreve a velocidade de queda de um objeto em função do tempo. A constante $c$ é um resultado das integrações que utilizamos para solucionar a equação. Mas é interessante observar que ela tem uma estreita relação com a velocidade inicial $\upsilon_0$. Na verdade, podemos reescrevê-la da seguinte forma:
+
+$$\upsilon(t) = 50 + (\upsilon_0 - 50)e^{-0.196t}$$
+
+O objetivo aqui é chegar na função $\upsilon(t)$ mantendo a constante $c$, ou seja, a solução geral da equação. Algumas vezes é possível desvendar a constante $c$ tendo em conta alguns dados adicionais, e aí conseguimos ter uma solução específica. 
+
+#### Equações Diferenciais Lineares de Primeira Ordem
+
+O primeiro tipo de EDO que vamos tentar resolver é a EDO Linear de Primeira Ordem. Trata-se de uma equação no seguinte formato: 
+
+$$\frac{dy}{dt} + p(t)y = g(t)$$
+
+As funções $p(t)$ e $g(t)$ são quaisquer funções contínuas em função de $t$. É importante sempre ter em conta que queremos descobrir $y(t)$.
+
+Para solucionar uma EDO Linear precisamos ter em conta que ela precisa estar no formato acima. Um exemplo de EDO Linear é a equação da queda do objeto que estávamos apresentando anteriormente. Podemos colocá-la no formato desejado:
+
+$$\frac{d\upsilon}{dt} = 9.8 - 0.196\upsilon \to \frac{d\upsilon}{dt} + 0.196\upsilon = 9.8$$
+Nesse caso, $p(t) = 0.196$, $g(t) = 9.8$ e $\upsilon = 1$. Como podemos ter vários tipos, vamos focar nossa solução na forma geral apresentada anteriormente. 
+
+Para solucionar essas equações vamos assumir uma função $\mu(t)$, a que chamamos de *fator de integração*. Essa função possui uma propriedade especial, apontada abaixo:
+
+$$\mu'(t) = \mu(t)p(t)$$
+
+Assim, se multiplicarmos todos os termos da equação pelo fator de integração, temos:
+
+$$\mu(t)\frac{dy}{dt} + \mu(t)p(t)y = \mu(t)g(t)$$
+
+Agora, considerando que $\mu(t)p(t) = \mu'(t)$ e $\mu(t)\frac{dy}{dt} = \mu(t)y'(t)$, o que temos do lado esquerdo da equação é a regra do produto: 
+
+$$\mu(t)y'(t) + \mu'(t)y = (\mu(t)y(t))'$$
+
+Dessa forma: 
+
+$$(\mu(t)y(t))' = \mu(t)g(t)$$
+
+Agora, podemos integrar ambos os lados para ter a solução:
+
+$$\int(\mu(t)y(t))'dt = \int\mu(t)g(t)dt$$
+
+$$ \mu(t)y(t)+C = \int\mu(t)g(t)dt$$
+
+Com um pouco de álgebra conseguimos isolar $y(t)$ e obter a solução da equação:
+
+$$y(t) = \frac{\int\mu(t)g(t)dt - C}{\mu(t)}$$
+
+Como a constante $C$ é desconhecida, podemos multiplicá-la por $-1$ sem maiores problemas, obtendo:
+
+$$y(t) = \frac{\int\mu(t)g(t)dt + C}{\mu(t)}$$
+
+A pergunta que resta é, no entanto, como obter o fator de integração $\mu(t)$? Vamos lá!
+
+Precisamos que $\mu(t)p(t) = \mu'(t)$, dessa forma:
+
+$$ p(t) = \frac{\mu'(t)}{\mu(t)}$$
+
+Sucede que:
+
+$$\frac{\mu'(t)}{\mu(t)} = (\ln \mu(t))' = p(t)$$
+
+Assim, podemos integrar ambos os lados:
+
+$$\int(\ln\mu(t))'dt = \int p(t)dt$$
+
+$$\ln\mu(t) + k = \int p(t)dt$$
+
+Como não sabemos o valor de $k$, podemos manipulá-la de forma a obter:
+
+$$\mu(t) = ke^{\int p(t) dt}$$
+
+Na equação final, essa constante $k$ poderá ser absorvida na constante $C$ principal. 
+
+$$y(t) = \frac{\int\mu(t)g(t)dt + C}{\mu(t)} =  \frac{\int ke^{\int p(t)dt}g(t)dt + C}{ke^{\int p(t)dt}} = \frac{k\int e^{\int p(t)dt}g(t)dt + C}{ke^{\int p(t)dt}} $$
+
+A simplificação disso resultará em:
+
+$$y(t) = \frac{\int e^{\int p(t)dt}g(t)dt + \frac{C}{k}}{e^{\int p(t)dt}}$$
+
+Como não sabemos o valor de $C$, nem de $k$, podemos considerar $\frac{C}{k}$ como $C$. Dessa forma temos que:
+
+$$y(t) = \frac{\int e^{\int p(t)dt}g(t)dt + C}{e^{\int p(t)dt}}$$
+
+Ou seja, podemos considerar que o fator de integração $\mu(t)$ é:
+
+$$\mu(t) = e^{\int p(t) dx}$$
+
+##### Aplicando para a equação da queda
+
+Agora que sabemos como solucionar uma EDO Linear de Primeira Ordem, vamos tentar resolver a equação da queda:
+
+$$\frac{d\upsilon}{dt} = 9.8 - 0.196\upsilon$$
+
+Primeiramente, vamos colocar os elementos em ordem:
+
+$$\frac{d\upsilon}{dt} + 0.196\upsilon = 9.8$$
+
+Considerando que, para essa equação, $p(t) = 0.196$, podemos obter $\mu(t)$:
+
+$$\mu(t) = e^{\int 0.196dt} = e^{0.196t + k}$$
+
+Considerando $\frac{d\upsilon}{dt} = \upsilon'(t)$, seguimos:
+
+$$\mu(t)\upsilon'(t) + \mu(t)0.196\upsilon = \mu(t)9.8$$
+
+Pela propriedade $\mu'(t) = \mu(t)p(t)$ e sabendo que $p(t) = 0.196$, temos que: 
+
+$$\mu(t)\upsilon'(t) + \mu'(t)\upsilon = \mu(t)9.8$$
+
+Com a regra do produto, obtemos:
+
+$$(\mu(t)\upsilon(t))' = \mu(t)9.8$$
+
+Integrando ambos os lados:
+
+$$\int(\mu(t)\upsilon(t))'dt = \int \mu(t)9.8 dt$$
+
+Tudo isso resultará em:
+
+$$\upsilon(t) = \frac{\int \mu(t) 9.8dt + C}{\mu(t)}$$
+
+Vamos substituir $\mu(t) = e^{0.196t}$:
+
+$$\upsilon(t) = \frac{9.8 \int e^{0.196t} dt + C}{e^{0.196t}}$$
+
+
+$$\upsilon(t) = \frac{50e^{0.196t} + C}{e^{0.196t}}$$
+
+Considerando que $\frac{1}{e^{0.196t}} = e^{-0.196t}$, podemos simplificar:
+
+$$\upsilon(t) = 50 + Ce^{-0.196t}$$
+
+Podemos determinar o valor da constante em termos de uma velocidade inicial. Vamos considerar a seguinte equação:
+
+$$\upsilon(0) = 50 + Ce^{-0.196(0)}$$
+
+Vamos resolvê-la para C, e vamos considerar o símbolo $\upsilon(0)$ como $\upsilon_0$, referente à velocidade inicial. 
+
+$$\upsilon_0 = 50 + Ce^{-0.196(0)} = 50 + Ce^0 = 50 + C$$
+
+Isolando C, temos:
+
+$$C = \upsilon_0 - 50$$
+
+Dessa forma, temos a equação da velocidade de queda, considerando uma velocidade inicial $\upsilon_0$:
+
+$$\upsilon(t) = 50 + (\upsilon_0 - 50)e^{-0,196t}$$
+
+Com essa função, podemos modelar o comportamento da queda de diversos objetos de acordo com sua velocidade inicial:
+
+```{r}
+#vamos criar a função v:
+v <- function(t,v0){50 + (v0 - 50)*exp(-.196*t)}
+#agora vamos criar o vetor t, de 0 a 10 segundos:
+t <- c(0:10)
+#agora, vamos criar um data-frame com várias velocidades iniciais em função do tempo:
+vs <- data.frame(t = t, 
+                 v0 = v(t,0),
+                 v10 = v(t,10),
+                 v25 = v(t,25),
+                 v50 = v(t,50),
+                 v75 = v(t,75),
+                 v90 = v(t,90))
+#agora vamos colocar algumas dessas velocidades no gráfico:
+ggplot(vs, aes(x=t)) +
+  geom_line(aes(y=v0), color="red") +
+  geom_line(aes(y=v10), color="brown") +
+  geom_line(aes(y=v25), color="green") +
+  geom_line(aes(y=v50), color="purple") +
+  geom_line(aes(y=v75), color="blue") +
+  geom_line(aes(y=v90), color="yellow") + 
+  labs(title="Comportamento de Vqueda conforme Vinicial",
+       y = "Vinicial")
+```
+
+##### Um outro caso
+
+Vamos tentar solucionar a seguinte equação:
+
+$$\cos(x) y' + \sin(x)y = 2\cos^3(x)\sin(x) - 1$$
+
+Em primeiro lugar, deixamos a equação no formato $y' + p(x)y = g(x)$. Para isso, dividimos todos os termos por $\cos(x)$:
+
+$$\frac{\cos(x)y'}{\cos(x)} + \frac{\sin(x)y}{\cos(x)} = \frac{2\cos^3(x)\sin(x)}{\cos(x)} - \frac{1}{\cos(x)}$$
+Isso pode ser simplificado como:
+
+$$y' + \tan(x)y = 2\cos^2(x)\sin(x) - \sec(x)$$
+
+O termo de integração $\mu(x)$ será:
+
+$$\mu(x) = e^{\int tan(x) dx} = e^{ln|\sec(x)|} = \sec(x)$$
+Assim solucionamos:
+
+$$\int(\sec(x)y)'dx = \int \sec(x)(2\cos^2(x)\sin(x)-\sec(x))dx$$
+
+Simplificando: 
+
+$$\sec(x)y + C = \int 2\cos(x)\sin(x) - \sec^2(x)dx$$
+
+$$\sec(x)y + C = 2\int \cos(x)\sin(x)dx - \int \sec^2(x)dx$$
+
+$$\sec(x)y + C = \sin ^2\left(x\right)-\tan \left(x\right)+C$$
+
+Dessa forma:
+
+$$y(x) = −\frac{1}{2}\cos\left(x\right)\cos\left(2x\right)−\sin\left(x\right)+c\cos\left(x\right)$$
+
+Vamos agora tentar plotar a função para alguns valores de c:
+
+```{r}
+#criar o vetor x:
+x <- seq(1,10,by=.01)
+#criar a função:
+y <- function(x,c){-1/2*cos(x)*cos(2*x) - sin(x) + c * cos(x)}
+#criar o data frame com x e alguns valores de c:
+dat <- data.frame(x = x,
+                  c5 = y(x,5),
+                  c10 = y(x,10),
+                  c15 = y(x,15),
+                  c20 = y(x,20))
+#plotar o gráfico:
+ggplot(dat,aes(x=x)) +
+  geom_line(aes(y=c5), color="red") +
+  geom_line(aes(y=c10), color="green") +
+  geom_line(aes(y=c15), color="blue") +
+  geom_line(aes(y=c20), color="brown") +
+  labs(title="y(x) variando valores de c", y = "y")
+```
+
+#### Equações Separáveis
+
+Nem todas as EDOs são lineares. Dentre as não-lineares existem as Equações Separáveis, que possuem o seguinte formato:
+
+$$N(y)\frac{dy}{dx} = M(x)$$
+
+Todos os $y$'s precisam estar multiplicados pela derivada e todos os $x$'s precisam estar do outro lado da equação. 
+
+A técnica matematicamente correta para a solução dessas equações envolve integração por substituição. Considerando que:
+
+- $u = y(x)$
+- $du = \frac{dy}{dx} = y'(x)$
+- $dx = \frac{dy}{dx} dx$
+
+Temos:
+
+$$\int  N(u)du = \int M(x)dx$$ 
+
+A outra técnica, mais direta, é considerar que:
+
+$$N(y)\frac{dy}{dx} = M(x) \to N(y)dy = M(x)dx \to \int N(y)dy = \int M(x)dx$$
+
+Vamos solucionar a equação abaixo:
+
+$$\frac{dr}{d\theta} = \frac{r^2}{\theta}$$
+
+O primeiro passo é colocar a equação no seu formato: todos os $r$s do lado direito e todos os $\theta$s do lado esquerdo:
+
+$$\frac{dr}{r^2} = \frac{d\theta}{\theta}$$
+
+Agora integramos ambos os lados:
+
+$$\int \frac{dr}{r^2} = \int \frac{d\theta}{\theta} \to -\frac{1}{r} = \ln|\theta|+C$$
+
+Isso pode ser escrito como:
+
+$$r(\theta) = - \frac{1}{\ln|\theta| + C}$$
+
+Dada uma condição inicial $r(1) = 2$ podemos determinar o valor de C e também o intervalo de validade dessa equação:
+
+$$2 = - \frac{1}{\ln|1|+C} \to 2 = - \frac{1}{0 + C} \to 2C = - 1 \to C = -\frac{1}{2}$$
+
+O intervalo de validade depende de que $\ln|\theta| - \frac{1}{2} \neq 0$. Dessa forma:
+
+$$ln|\theta| \neq \frac{1}{2} \to |\theta| \neq e^{\frac{1}{2}}  \to \theta \neq \pm e^{\frac{1}{2}} \to \theta \neq \pm \sqrt{e}$$
+Além disso, é necessário que $\theta \neq 0$, por conta do logaritmo natural. Como o valor de $\theta$ na equação é absoluto, o importante é que: $0 < |\theta| < \sqrt{e}$, sendo este o intervalo de validade. 
+
+### Equações Homogêneas de Segunda Ordem
+
+EDOs de segunda ordem são as que apresentam derivadas de segunda ordem. Uma EDO Homogênea de Segunda Ordem obedece o seguinte formato:
+
+$$a\frac{d^2y}{dx^2} + b\frac{dy}{dx} + cy = 0$$
+
+Trata-se de uma equação linear de segunda ordem com coeficientes $a,b,c$ para cada grau de derivação da função $y$. Perceba também que $g(x)$ sempre é igual a $0$ nessas equações.
+
+Considere uma equação linear de primeira ordem no seguinte formato:
+
+$$y' + ay = 0$$
+Nesse caso, $\mu(x) = e^{\int adx} = e^{ax}$. Dessa forma:
+
+$$\mu y' + \mu cy = \mu0 \to \mu y' + \mu'y = \mu0 \to (\mu y)' = \mu0 \to$$
+
+$$\int \mu y dx = \int \mu 0 dx \to \mu y = 0 + C \to y = \frac{C}{\mu} = C\mu^{-1}$$
+
+Dessa forma:
+
+$$y = Ce^{-ax}$$
+
+Podemos aplicar esse racional para as equaçoes homogêneas de segunda ordem. Consideremos que $y = e^{mx}$, $y' = me^{mx}$ e $y'' = m^2e^{mx}$. Dessa forma temos que: 
+
+$$ay'' + by' + cy = am^2e^{mx} + bme^{mx} + ce^{mx} = 0 $$
+
+Ou então:
+
+$$ e^{mx}(am^2 + bm + c) = 0 $$
+
+Como $e^{mx} \neq 0$ para todo $x$, temos que:
+
+$$am^2 + bm + c = 0$$
+
+Essa equação é denominada *equação auxiliar* e ela determina o valor de $m$ para solucionarmos $y(x) = e^{mx}$, que seria a solução da equação.
+
+Existem três possíveis soluções. Se a equação auxiliar tiver duas raízes reais $m_1$ e $m_2$ teremos que $y_1 = e^{m_1x}$ e $y_2 = e^{m_2x}$. Nesse caso, a solução geral dessas equações é:
+
+$$y(x) = C_1e^{m_1x} + C_2e^{m_2x}$$
+Se a equação auxiliar tiver apenas uma raiz real $m$, teremos:
+
+$$y(x) = C_1e^{mx} + C_2e^{mx}$$
+
+Por fim, a equação auxiliar pode ter soluções não-reais. Se obtivermos raízes complexas conjugadas, $m_1 = \alpha + i\beta$ e $m_2 = \alpha - i\beta$, teremos como solução:
+
+$$y(x) = C_1e^{(\alpha + i\beta)x} + C_2e^{(\alpha - i\beta)x}$$
+
+Essa solução pode ser reescrita tendo em conta a igualdade $e^{i\theta} = \cos(\theta) + i\sin (\theta)$. Dessa forma:
+
+$$y(x) = e^{\alpha x}[C_1\cos(\beta x) + C_2\sin(\beta x)]$$
+
+
+### Alguns problemas envolvendo EDOs
+
+

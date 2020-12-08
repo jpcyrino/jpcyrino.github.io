@@ -1,0 +1,363 @@
+---
+title: "Álgebra Linear"
+author: "João Paulo Lazzarini Cyrino"
+date: "04/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## Vetores
+
+Existem, basicamente, dois tratamentos para os **vetores** na matemática: geométrico e algébrico. Segundo o tratamento geométrico, podemos entender vetores como segmentos de reta que apresentam módulo (tamanho), direção e sentido. 
+
+Abaixo temos alguns exemplos de vetores no espaço bidimensional ($R^2$):
+
+```{r, echo=FALSE, fig.width=5,fig.height=3, fig.align='center'}
+v <- data.frame(x = c(2,4,6),
+                y = c(6,4,2))
+
+ggplot(v, aes(x = x, y = y)) +
+  geom_segment(aes(x=0,y=0,xend=x,yend=y), arrow=arrow(length=unit(0.2,"cm"))) +
+  geom_text(aes(x=.5,y=3,label="u")) +
+  geom_text(aes(x=1.5,y=2,label="v")) +
+  geom_text(aes(x=3,y=1.5, label="w"))
+
+```
+
+Representamos, em notação matemática, os vetores como: $\vec{u}$, $\vec{v}$ e $\vec{w}$. Também podemos representá-los em relação a dois pontos no plano cartesiano, por exemplo, supondo os pontos $A = (0,0)$, $B = (2,6)$, $C = (4,4)$ e $D = (6,2)$, temos que:
+
+- $\vec{u} = \vec{AB}$
+- $\vec{v} = \vec{AC}$
+- $\vec{w} = \vec{AD}$
+
+É importante entender que a informação que temos sobre vetores não leva em conta sua posição no plano cartesiano, mas apenas seu módulo (tamanho), direção e sentido. Dessa forma os vetores no gráfico abaixo são idênticos:
+
+```{r, echo=FALSE, fig.width=5,fig.height=3,fig.align='center'}
+ggplot(data.frame(x = 2, y = 4), aes(x=x, y=y)) +
+  geom_segment(aes(x=0, xend=x, y=0, yend=y), arrow=arrow(length=unit(.2,"cm"))) +
+  geom_segment(aes(x=2, xend=2+x, y=1, yend=1+y), arrow=arrow(length=unit(.2,"cm")))
+
+```
+
+Nesse sentido, representamos os vetores de acordo com sua extensão em cada um dos eixos do espaço. Dessa forma, em um espaço de duas dimensões ($R^2$), com os eixos $x, y$, um vetor $\vec{v}$ pode ser definido, dentre outras, das seguintes formas:
+
+- $\vec{v} = \left(\begin{matrix}x \\ y \end{matrix}\right)$
+- $\vec{v} = (x,y)$
+- $\vec{v} = <x,y>$
+
+Utilizando a primeira forma e tendo em conta os vetores $\vec{u}, \vec{v}, \vec{w}$ apresentados anteriormente temos que:
+
+$$\vec{u} = \left(\begin{matrix}2 \\ 6\end{matrix}\right) \vec{v} = \left(\begin{matrix}4 \\ 4\end{matrix}\right) \vec{w} = \left(\begin{matrix}6 \\ 2\end{matrix}\right)$$
+
+### Operações com vetores
+
+Os vetores estão sujetos a algumas operações matemáticas: adição, multiplicação por escalar e produtos entre vetores. Vamos ver aqui as primeiras duas operações. 
+
+A adição dos vetores se dá de forma bastante simples: considerando um vetor $\vec{u} = (u_1, u_2)$ e um vetor $\vec{v} = (v_1, v_2)$ temos que:
+
+$$\vec{u} + \vec{v} = \left(\begin{matrix} u_1 + v_1 \\ u_2 + v_2 \end{matrix}\right)$$
+
+A adição de vetores é comutativa ($\vec{u} + \vec{v} = \vec{v} + \vec{u}$) e associativa ($\vec{u} + (\vec{v} + \vec{w}) = (\vec{u} + \vec{v}) + \vec{w}$). Podemos representar graficamente a adição de vetores da seguinte forma:
+
+```{r, echo=FALSE, fig.width=5,fig.height=3,fig.align='center'}
+v <- data.frame(x=c(2,4,6), y=c(2,2,4))
+ggplot(v, aes(x=x,y=y)) +
+  geom_segment(aes(x=0,y=0, xend=x,yend=y), arrow=arrow(length=unit(.2,"cm"))) +
+  geom_text(aes(x=2.2,y=2,label="u")) +
+  geom_text(aes(x=4.2,y=2,label="v")) +
+  geom_text(aes(x=5.5,y=3.2, label="(u+v)"))
+
+```
+
+Podemos também multiplicar um vetor $\vec{v}$ por um escalar $\alpha$. Nesse caso:
+
+$$ \alpha \vec{v} = \left(\begin{matrix} \alpha v_1 \\ \alpha v_2\end{matrix}\right)$$
+
+O módulo do vetor representa seu tamanho e é escrito como $|\vec{v}|$. Seu cálculo se dá:
+
+$$|\vec{v}| = \sqrt{v_1^2 + v_2^2 ... v_n^2}$$
+Em que $v_1,v_2..v_n$ equivale ao valor em cada eixo a depender do número de dimensões. 
+
+### Vetores Paralelos
+
+Um vetor $\vec{v}$ é paralelo a um vetor $\vec{u}$ se:
+
+$$\vec{v} = \alpha\vec{u}$$
+
+Vetores paralelos são representados como $\vec{v} // \vec{u}$.
+
+Tendo isso em conta, pensemos no seguinte problema: dados os vetores $\vec{w} = (3,2,5)$, $\vec{u} = (2,1,4)$ e $\vec{v} = (a,6,b) + 2\vec{w}$, quais os valores de $a$ e $b$ considerando que $\vec{u} // \vec{v}$?
+
+Se $\vec{u} // \vec{v}$, então:
+
+$$\vec{u} = \alpha\vec{v}$$
+
+Dessa forma:
+
+$$\left(\begin{matrix}2 \\ 1 \\ 4\end{matrix}\right) = \alpha\left[\left(\begin{matrix}a \\ 6 \\ b\end{matrix}\right) + 2\left(\begin{matrix}3 \\ 2 \\ 5\end{matrix}\right)\right]$$
+
+Para solucionar, precisamos encontrar o valor de $\alpha$. Se $\vec{u} = \alpha\vec{v}$ então $u_n = \alpha v_n$. Como sabemos que $u_2 = 1$ e $v_2 = 6 + 2(2) = 10$, basta resolvermos:
+
+$$1 = 10\alpha \to \alpha = \frac{1}{10}$$
+
+Assim: 
+
+$$2 = \frac{1}{10}(a + 6) \to 2 = \frac{a + 6}{10} \to a = 20 - 6 \to a = 14$$
+
+$$4 = \frac{1}{10}(b + 10) \to 4 = \frac{b + 10}{10} \to a = 40 - 10 \to b = 30$$
+
+### Vetores Unitários (Versores)
+
+Um vetor unitário é todo vetor cujo módulo é igual a 1. Podemos obtê-los a partir de um vetor qualquer a partir do processo de normalização:
+
+$$\hat{v} = \frac{\vec{v}}{|\vec{v}|}$$
+
+Os vetores unitários $\hat{i} = (1,0,0)$ ou $(1,0)$ em $R^2$, $\hat{j} = (0,1,0)$ ou $(0,1)$ em $R^2$ e $\hat{k} = (0,0,1)$ são bastante comuns, de forma que podemos notar qualquer vetor multiplicando escalares por cada um desses vetores. Dessa forma, um vetor no espaço $R^2$ como $(2,6)$ pode ser notado como $2\hat{i} + 6\hat{j}$ que é igual a $2(1,0) + 6(0,1)$. Perceba que $2(1,0) + 6(0,1) = (2,0) + (0,6) = (2,6)$.   
+
+
+### Produtos entre Vetores
+
+Existem três formas de multiplicar vetores com vetores: produto escalar, produto vetorial e produto misto. Vejamos cada um deles.
+
+#### Produto Escalar
+
+O produto escalar entre vetores $\vec{v}$ e $\vec{u}$ é dado por: 
+
+$$\vec{v} \cdot \vec{u} = v_1u_1 + v_2u_2 + ... + v_nu_n$$
+
+Existe uma importante relação entre o produto escalar dos vetores e o ângulo formado entre eles:
+
+$$\vec{v} \cdot \vec{u} = |v||u|\cos\theta$$
+
+Interessantemente, se:
+
+- $\vec{v} \cdot \vec{u} > 0$, $\theta < 90^o$
+- $\vec{v} \cdot \vec{u} < 0$, $\theta > 90^o$
+- $\vec{v} \cdot \vec{u} = 0$, $\theta = 90^o$
+
+A relação entre ângulos e produtos escalares nos leva ao conceito de *ângulos diretores*, que são os ângulos formados entre os vetores e os eixos do espaço. 
+
+Considerando que $\vec{v} \cdot \vec{u} = |\vec{v}||\vec{u}|\cos \theta$, e que $\hat{i}$, $\hat{j}$ e $\hat{z}$ são vetores na mesma direção e sentido dos eixos $x$, $y$ e $z$,respectivamente, podemos dizer que: 
+
+- O cosseno do ângulo $\alpha$ entre $\vec{v}$ e o eixo $x$ é dado por: $\cos\alpha=\frac{\vec{v}\hat{i}}{|\vec{v}||\hat{i}|}$ 
+- O cosseno do ângulo $\beta$ entre $\vec{v}$ e o eixo $y$ é dado por: $\cos\beta=\frac{\vec{v}\hat{j}}{|\vec{v}||\hat{j}|}$ 
+- O cosseno do ângulo $\gamma$ entre $\vec{v}$ e o eixo $z$ é dado por: $\cos\gamma=\frac{\vec{v}\hat{k}}{|\vec{v}||\hat{k}|}$ 
+
+
+### Produto Vetorial
+
+O produto vetorial só existe no espaço $R^3$ e é notado como $\vec{u} \times \vec{v}$. Seu módulo equivale a:
+
+$$|\vec{u} \times \vec{v}| = |\vec{u}||\vec{v}|\sin \theta$$
+
+Como existe uma relação entre esse produto e o seno do ângulo dos dois vetores, o módulo atingirá seu valor máximo quando $\theta = 90^o$. 
+
+Para calcular o produto vetorial utilizamos um determinante: 
+
+$$\vec{u} \times \vec{v} = \left|\begin{matrix} \hat{i} & \hat{j} & \hat{k}
+\\ u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3 \end{matrix}\right|$$
+
+### Produto Misto
+
+O produto misto se dá entre três vetores: $\vec{u} \cdot (\vec{v} \times \vec{w})$. Sua solução também envolve um determinante:
+
+
+$$\vec{u} \cdot (\vec{v} \times \vec{w}) = \left|\begin{matrix} u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3 \\ w_1 & w_2 & w_3 \end{matrix}\right| $$
+
+O produto misto tem por aplicação o cálculo do volume de um paralelepípedo formado pelos lados $\vec{u}, \vec{v}, \vec{w}$. Dessa forma, considerando:
+
+$$\vec{u} = (2,6,-2) \\ \vec{v} = (0,4,-2) \\ \vec{w} = (2,2,-4)$$
+
+Qual é o volume do paralelepípedo, considerando que $V = \vec{u} \cdot (\vec{v} \times \vec{w})$?
+
+Para isso, basta solucionar o determinante:
+
+$$V = \vec{u} \cdot (\vec{v} \times \vec{w}) = \left|\begin{matrix} 2 & 6 & -2 \\ 0 & 4 & -2 \\ 2 & -2 & 4 \end{matrix}\right|$$
+
+Isso pode ser facilmente calculado em R, através da função *det()*, que resultará em $16$:
+
+```{r}
+m <- matrix(c(2,0,2,6,4,-2,-2,-2,4),ncol=3)
+det(m)
+```
+
+## Equações da Reta e do Plano
+
+### Equações da Reta
+
+Vamos supor que temos uma reta que passa pelos pontos (0,0) e (2,3). Como determinar uma equação para essa reta?
+
+Primeiramente, determinamos o coeficiente angular $m$ da reta: 
+
+$$ m = \frac{y_f - y_0}{x_f - x_0} \to m = \frac{3-0}{2-0} = \frac{3}{2}$$
+
+Tendo o coeficiente angular $m$ podemos aplicá-lo na equação da reta:
+
+$$ y - y_0 = m(x - x_0) \to y - 0 = \frac{3}{2}(x - 0) \to y = \frac{3}{2}x$$
+
+A equação da reta é especialmente útil no espaço $R^2$. Nos espaços de dimensões superiores podemos obter os pontos de uma reta a partir de um ponto e um vetor que diz a direção e sentido dessa reta.
+
+Suponhamos uma reta $r$ que passa pelo ponto $A(1,-1,4)$ e segue na direção do vetor $\vec{v} = \left(\begin{matrix} 2 \\ 3 \\ 2\end{matrix}\right)$. Utilizamos a **equação vetorial** abaixo para obter as coordenadas da reta em diversos pontos numa série $t$:
+
+$$(x,y,z) = (a_x,a_y,a_z) + t\vec{v} \to (x,y,z) = \left(\begin{matrix} 1 \\ -1 \\ 4 \end{matrix}\right) + t\left(\begin{matrix}2 \\ 3 \\2 \end{matrix}\right)$$
+
+Com essa equação podemos obter, para $t = 1,2..n$:
+
+$$(1, -1, 4) + 1(2,3,2) = (3,2,6)$$
+
+$$(1, -1, 4) + 2(2,3,2) = (5,5,8)$$
+
+$$(1, -1, 4) + n(2,3,2) = (1 + 2n, -1 + 3n, 4 + 2n)$$
+
+A partir da equação vetorial, considerando que as coordenadas de um ponto equivalem a $(x_0,y_0,z_0)$ é possível obter a equação paramétrica:
+
+$$(x,y,z) = (x_0,y_0,z_0) + t(a,b,c) \to (x,y,z) = (x_0 + at, y_0 + bt, z_0 + ct)$$
+
+Vamos determinar a equação paramétrica de uma reta que passa pelo ponto $P(3,-4,2)$ e é paralela ao vetor $\vec{v} = (2,1,-3)$:
+
+$$(x,y,z) = (3 + 2t,-4 + t, 2 - 3t) \\ x = 3 + 2t \\ y = -4 + t \\ z = 2 - 3t $$
+
+Se quisermos saber os pontos quando $t = 1$ e $t = 2$ fazemos:
+
+$$(3 + 2, -4 + 1, 2 - 3) = (5,-3,-1) \\ (3 + 4, -4 + 2, 2 - 6) = (7, -2, -4)$$
+
+Quando isolamos o parâmetro $t$ temos a equação simétrica:
+
+$$x = x_0 + at \to t = \frac{x - x_0}{a} \\ y = y_0 + bt \to t = \frac{y-y_0}{b} \\ z = z_0 + ct \to t = \frac{z-z_0}{c}$$
+
+Eis a *equação simétrica*:
+
+$$ \frac{x-x_0}{a} = \frac{y - y_0}{b} = \frac{z-z_0}{c}$$
+
+### Equações do Plano
+
+Tendo em conta que o produto escalar entre dois vetores ortogonais resulta em $0$, se tivermos um vetor normal $n = (a,b,c)$ a um plano $\alpha$, e um ponto A(x_0,y_0,z_0) pertencente a $\alpha$, pertencerá também a $\alpha$ qualquer ponto P(x,y,z) que cumprir: 
+
+$$n \cdot \vec{AP} = 0$$
+
+Com isso encontramos a *equação geral do plano*:
+
+$$ax + by + cz + d = 0 \\ d = -(ax_0 + by_0 + cz_0)$$
+
+Podemos derivar a equação de um plano $\alpha$ conhecendo um ponto $A$ do plano e um vetor $n$ normal ao plano:
+
+$$ A(3, -4, 2) \\ n = (2, 1, -3) \\ AP \cdot n = 0 \to (x  - 3, y +4, z -2) \cdot (2,1,-3) = 0 \\ 2(x-3) + (y + 4) - 3(z - 2) = 0 \\ 2x + y -3z + 4 = 0$$
+
+O plano, portanto é definido pela equação $2x + y - 3z = -4$
+
+
+### Posições Relativas entre Retas e Planos
+
+Consideremos um plano $\pi$ e uma reta $r$ que se descrevem pelas seguintes equações, respectivamente:
+
+$$ ax + bx + cz = d \\ (x,y,z) = (x_0, y_0, z_0) + t(v_1,v_2,v_3)$$
+
+A reta e o plano serão transversais se: 
+
+$$(a,b,c) \cdot (v_1,v_2,v_3) \neq 0$$
+
+Caso contrário, a reta $r$ é paralela ao plano $\pi$ estando ou não contida nele. 
+
+Tomando a reta $r = (-2,1,5) + t(3,-4,4)$ e o plano $\pi \to 4x - 3y - 6z - 5 = 0$, podemos dizer que $r // \pi$? 
+
+$$r // \pi \to (a,b,c) \cdot (v_1,v_2,v_3) = 0 \\ (4,-3,-6) \cdot (3,-4,4) = 0 $$
+
+Como $(4,-3,-6) \cdot (3,-4,4) = 0$, podemos dizer que $r$ e $\pi$ são paralelos.
+
+Da mesma forma que entre retas e planos, podemos determinar posições relativas entre dois planos. Nesse caso, dois planos são paralelos se seus vetores normais $(a_1,b_1,c_1)$ e $(a_2,b_2,c_2)$ forem paralelos. Ou seja, dados dois planos $\pi_1$ e $\pi_2$:
+
+$$\pi_1 // \pi_2 \to (a_1, b_1, c_1) = \alpha(a_2,b_2,c_2)$$
+
+Considerando a equação geral do plano $ax + by + cz = d$, podemos determinar que dois planos são coincidentes se: 
+
+$$(a_1,b_1,c_1,d_1) = \lambda(a_2,b_2,c_2,d_2)$$
+
+Tanto $\alpha$ como $\lambda$ são constantes de proporcionalidade. 
+
+## Matrizes e Determinantes
+
+Matrizes são tabelas retangulares formadas por números dispostos nas linhas e colunas. Representamos o número de linhas de uma matriz pela letra $m$ e o número de colunas pela letra $n$. Dessa forma, uma matrix $M_{m\times n}$ possui $m$ linhas e $n$ colunas. 
+
+$$M = [a_{ij}]_{m\times n} \; com \;\; 1 \leq i \leq m \;\; 1 \leq j \leq n, \;\;\; i,j \in N$$
+
+### Tipos de Matrizes
+
+Matrizes **quadradas** são aquelas em que $m = n$, ou seja, o mesmo número de linhas e colunas. 
+
+$$\left[\begin{matrix} 2 & 8 & 5 \\ 3 & 3 & 1 \\ 2 & 5 & 1 \end{matrix}\right]$$
+
+Matrizes **triangulares** são aquelas em que $a_{ij} = 0 \; \forall i > j$ ou $a_{ij} = 0 \; \forall i < j$.
+
+$$\left[\begin{matrix} 2 & 0 & 0 \\ 3 & 3 & 0 \\ 2 & 5 & 1 \end{matrix}\right] \; \; \left[\begin{matrix} 2 & 8 & 5 \\ 0 & 3 & 1 \\ 0 & 0 & 1 \end{matrix}\right]$$
+
+Matrizes **diagonais** são aquelas em que $a_{ij} = 0 \; \forall i \neq j$.
+
+$$\left[\begin{matrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 1 \end{matrix}\right]$$
+
+Matrizes **identidade** são aquelas em que $a_{ij} = 1 \; \forall i = j $ e $a_{ij} = 0 \; \forall i \neq j$.
+
+$$\left[\begin{matrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{matrix}\right]$$
+
+### Operações com Matrizes
+
+**Adição e subtração de Matrizes**: 
+
+$$A_{m\times n} + B_{m\times n} = C_{m\times n} \to a_{ij} + b_{ij} = c_{ij}$$
+
+$$A_{m\times n} - B_{m\times n} = C_{m\times n} \to a_{ij} - b_{ij} = c_{ij}$$
+
+**Multiplicação de Matrizes**:
+
+$$A_{m\times n}B_{n \times p} = C_{m \times p} \to c_{ij} = \sum_{k=1}^{n}a_{ik}b_{kj}$$
+
+**Matriz inversa**:
+
+$$A_{m \times m}A_{m\times m}^{-1} = A_{m\times m}^{-1}A_{m \times m} = I_m$$
+**Matriz transposta**:
+
+$$A_{m \times n}^T = A_{n \times m}  $$
+
+### Calculando Determinantes
+
+#### Matrizes $2 \times 2$
+
+$$\left|\begin{matrix}a & b \\ c & d\end{matrix}\right| = ad-bc$$
+#### Matrizes $3 \times 3$
+
+Utiliza-se a *Regra de Sarrus*:
+
+$$M = \left[\begin{matrix} a & b & c \\ d & e & f \\ g & h & i \end{matrix}\right] \\ 
+\det M = aei + bfg + cdh - ceg - afh - bdi$$
+
+#### Matrizes $4 \times 4$
+
+*Teorema de Laplace*:
+
+- Em uma matriz $M$ escolher um elemento $a_{ij}$, eliminar a linha $i$ e a coluna $j$, resultando em uma nova matriz. O determinante dessa nova matriz se chama Menor Complementar $MC_{ij}$.
+- Cofator $A_{ij} = (-1)^{i+j}MC_{ij}$
+- Escolher uma linha ou coluna da matriz. Obter o determinante calculando a soma do produto de cada elemento dessa linha ou coluna por seu respectivo cofator: $\det M = \sum_{i=1}^na_{ij}A_{ij}$ ou $\det M = \sum_{j=1}^ma_{ij}A_{ij}$ 
+
+*Regra de Chio*:
+(...)
+
+### Propriedades dos Determinantes de uma Matriz
+
+- **Teorema de Jacobi**: O Teorema de Jacobi implica que se multiplicarmos todos os elementos de uma fila (linha ou coluna) de uma matriz A por um mesmo número não nulo, e somarmos os resultados dos elementos aos seus correspondentes de outra fila (linha ou coluna), obteremos outra matriz B. Nesse caso, $\det A = \det B$
+- **Teorema de Binet:** $\det AB = \det A \cdot \det B$
+- Trocar duas linhas ou colunas de uma matriz faz com que seu determinante mude de sinal.
+- Multiplicar todos os elementos de uma linha ou coluna de uma matriz por $k$ fará com que o determinante dessa matriz seja multiplicado por $k$. Dessa forma, se $M$ for uma matriz $3 \times 3$, $\det 2M = 2^3\det M$.
+- Se todos os elementos de uma linha ou coluna de uma matriz forem $0$, seu determinante será também $0$.
+- $\det A = \det A^T$
+- O determinante de uma matriz triangular é igual o produto dos elementos de sua diagonal principal.
+- $\det A^{-1} = \frac{1}{\det A}$
+
+## Sistemas Lineares
+
+
+
+
+## Espaços Vetoriais
