@@ -1,0 +1,83 @@
+---
+title: "Linguística Enquanto Ciência Formal"
+author: "João Paulo Lazzarini Cyrino"
+date: "02/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+A linguística é uma área do saber que envolve diversas perspectivas e métodos. É possível dizer que cada área da linguístiva envolve um fazer científico bastante distinto. Temos áreas mais próximas das ciências sociais, outras mais próximas das ciências naturais, etc. Aqui quero apresentar as *ciências formais* e como que a teoria, descrição e análise sintáticas estão relacionadas a esse tipo de ciência.
+
+## Ciências Formais
+
+Ciência formal é o nome que se costuma dar às ciências que estão preocupadas com a *forma* do raciocínio humano. O termo provém do alemão *Formalwissenschaft* e as ciências formais mais conhecidas são a *matemática* e a *lógica*. 
+
+Sucede que tanto a *matemática* como a *lógica* não estão preocupadas em descrever fenômenos do mundo real, mas sim em explorar as deduções possíveis a partir de um conjunto de afirmações primitivas, denominadas axiomas. Além da matemática e da lógica, temos também a estatística, a computação, a teoria da informação e a teoria linguística como ciências formais. 
+
+Ciências formais lidam com a formulação de teoremas com base em sistemas formais. Sistemas formais envolvem:
+
+- Um conjunto de símbolos (alfabeto) que podemos concatenar e produzir fórmulas
+- Uma gramática: regras de formação de fórmulas a partir de fórmulas mais simples/símbolos
+- Um conjunto de axiomas: fórmulas tidas como verdadeiras
+- Um conjunto de regras de inferência. Uma fórmula inferida a partir de um axioma é denominada um teorema.
+
+Essa forma de estudar provém do crescimento da necessidade de se fazer sistematizações científicas. 
+
+- Euclides mostrou como de um pequeno conjunto de princípios se pode derivar o conhecimento sobre geometria que se tinha na Grécia Antiga. 
+- Newton mostrou que de três leis se pode obter as leis sobre o movimento terrestre e planetário (mecânica)
+
+No século XIX chegou-se à conclusão de que era possível separar os aspectos formais (a sintaxe) de um sistema como o de Newton ou de Euclides daquilo que eles significam (a semântica). Isso ficou bastante claro com a geometria não-Euclideana. 
+
+**Postulado das Paralelas (V Postulado de Euclides): ** Dada uma linha L e um ponto P fora de L, uma e apenas uma linha L' pode ser desenhada através de P paralelamente a L. 
+
+O postulado acima fora questionado algumas vezes ao longo da história até que, no início do século XIX dois matemáticos (Lobachevski e Bolyai) chegaram independentemente à conclusão de que ele não podia ser provado em função dos outros postulados de Euclides. 
+
+Isso, ao invés de negar a geometria de Euclides fez surgir a ideia de que, na verdade, os axiomas não precisam ser verdades absolutas sobre o mundo. O que é mais interessante diante dos axiomas é perguntar quais tipos de modelos podem ser derivados deles. 
+
+## E o que isso tem a ver com linguística?
+
+Quando estamos estudando a estrutura sintática das línguas podemos entender que o ordenamento e as possibilidades combinatórias das palavras são consequência de um sistema formal. Bloomfield foi o primeiro linguista a chamar atenção a isso e essa ideia foi desenvolvida por Zellig Harris e, de forma mais sistemática, por Noam Chomsky. 
+
+Da mesma forma que podemos utilizar sistemas formais como o de Newton para descrever fenômenos físicos, podemos utilizar sistemas formais para descrever línguas ou para desenvolver teorias sobre a sintaxe delas. 
+
+Boa parte dos estudos em sintaxe atuais se baseiam nessas ideias, embora muitas vezes isso não fique explícito. Para análise sintática, no entanto, é sempre importante que saibamos justificar determinadas análises em termos formais. 
+
+Neste curso aprenderemos a definir as estruturas sintáticas nesses termos, o que tornará mais claro o trabalho de análise. 
+
+## Sistema MIU
+
+Vamos ilustrar um sistema formal com o sistema MIU:
+
+- Alfabeto $A = {M, I, U}$
+- Axioma: $MI$ pertence ao sistema MIU
+
+Regras:
+
+1. Pode-se acrescentar $U$ a qualquer teorema que termine em $I$. Por exemplo: $MI \to MIU$
+2. Dada uma expressão $y$, se $My$ é um teorema, então $Myy$ é também um teorema. Por exemplo: $MUM \to MUMUM$
+3. Em qualquer teorema podemos substituir a expressão $III$ por $U$. Por exemplo: $UMIIIMU \to UMUMU$
+4. A expressão $UU$ pode ser eliminiada. Por exemplo $UUM \to M$
+
+
+Exemplo: Derivação de $MUIIU$
+
+1. $MI$ (axioma)
+2. $MII$ (regra 2)
+3. $MIIII$ (regra 2)
+4. $MIIIIU$ (regra 1)
+5. $MUIU$ (regra 3)
+6. $MUIUUIU$ (regra 2)
+7. $MUIIU$ (regra 4)
+
+**Pergunta: ** $MU$ é um teorema do sistema MIU?
+
+
+
+
+
