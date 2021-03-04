@@ -1,5 +1,5 @@
 {"volumes" : [
-  {"titulo" : "Volume I", "arquivo" : "/v1/v1.json"},
-  {"titulo" : "Volume II", "arquivo" : "/v2/v2.json"}
+  {"titulo" : "Volume I", "arquivo" : "v1/v1.json"},
+  {"titulo" : "Volume II", "arquivo" : "v2/v2.json"}
 ]
 }
