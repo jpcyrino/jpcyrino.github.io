@@ -1,0 +1,15 @@
+{
+  "titulo" : "Volume I",
+  "indice" : [
+    {"titulo" : "Apresentação",
+     "pagina" : "/v1/0_apresentacao.html"},
+    {"parte" : ""},
+    {"titulo" : "Uma Introdução ao Estudo da História",
+      "autoria" : "Ana Carolina Barbosa Pereira",
+      "pagina" : "/v1/1_introducao_historia.html"},
+    {"titulo" : "Dez obras para conhecer Estruturalismo",
+      "autoria" : "Danniel da Silva Carvalho e João Paulo Lazzarini Cyrino",
+      "pagina" : "/v1/2_estruturalismo.html"},
+    {"parte" : "fim"}
+  ]
+}

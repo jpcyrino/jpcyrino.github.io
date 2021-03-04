@@ -1,0 +1,5 @@
+{"volumes" : [
+  {"titulo" : "Volume I", "arquivo" : "/json/v1.json"},
+  {"titulo" : "Volume II", "arquivo" : "/json/v2.json"},
+  {"titulo" : "Volume III", "arquivo" : "/json/v3.json"}
+]

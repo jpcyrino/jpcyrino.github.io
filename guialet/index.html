@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>GuiaLET</title>
+  <link rel="stylesheet" href="guialet.css"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+  <header>
+    <!-- Logotipo Guia LET, ideia é que fique centralizado em uma faixxa ocupando ao menos 1/3 da página-->
+    <h1 id="titulo-principal">GuiaLET</h1>
+    <p id="subtitulo-principal">Guia Bibliográfico do Instituto de Letras - UFBA</p>
+  </header>
+  <nav>
+    <!-- Menu horizontal, permitindo a navegação pelos diferentes volumes -->
+    <ul id="menu-volumes">
+      <li><a href="/index.html">GuiaLET</a></li>
+    </ul>
+  </nav>
+  <section id="indice-rapido" style="display: none">
+    <ul>
+      <li><a href="" onclick="carregaVolume(volumeAtual); return false;">Índice</a></li>
+    </ul>
+    </section>
+  <article id="artigo">
+    <!-- aqui deve aparecer o texto de cada capítulo, por padrão mostrar apresentação-->
+    <h1>GuiaLET</h1>
+    <p>O GuiaLET é um projeto de extensão cujo objetivo é oferecer aos estudantes uma orientação
+      quanto a leituras fundamentais para sua formação, disponível online e com acesso aberto.
+      O projeto está sendo desenvolvido em parceria com a <a href="http://www.edufba.ufba.br" target="_blank">
+      Editora da Universidade Federal da Bahia – EDUFBA</a>.</p>
+    <p>O GuiaLET conta com textos apresentando os diferentes campos de estudo/pesquisa/especialidade em Letras,
+      indicando 10 (dez) leituras essenciais para introdução em cada uma dessas áreas do conhecimento.
+      O material serve como guia tanto para a formação do estudante de graduação, seja o licenciado, seja o bacharel,
+      como para o desenvolvimento de pesquisa, já que ele tem ao seu alcance uma relação de obras basilares
+      para o entendimento de determinada área.</p>
+    <p>O projeto é inspirado no <em>Guia Bibliográfico da Faculdade de Filosofia, Letras
+      e Ciências Humanas – FFLCH – da Universidade de São Paulo – USP</em>, coordenado pelo Prof. Dr. João Roberto Faria que,
+      por sua vez, inspirou-se no texto <a href="https://teoriaedebate.org.br/2000/07/01/10-livros-para-conhecer-o-brasil/" target="_blank">
+      DEZ LIVROS PARA CONHECER O BRASIL, de Antonio Candido</a>. O GuiaLET, entretanto, possui o diferencial de atender
+      tanto áreas mais gerais do curso de Letras, como as componentes curriculares, quanto mais específicas,
+      como áreas de pesquisa e de especialidade, servindo como guia de leitura para nossos alunos, contribuindo, assim, para uma autonomia em sua formação.</p>
+    <p>GuiaLET pode (e deve) estabelecer um diálogo também interdisciplinar, uma vez que nosso currículo,
+      projetos de pesquisa e a própria área assim o são. Dessa forma, o GuiaLET poderá contar com
+      textos das áreas da Educação, Antropologia, Filosofia, Teatro, Artes, Estudos de Gênero,
+      História, Ciências da Computação, Ciências Biológicas, entre outras.</p>
+    <p>Por fim, o GuiaLET pretende estabelecer um diálogo entre o corpo docente, no que diz respeito
+      a sua formação e pesquisa, e o corpo discente, que, como é sabido, não tem dimensão
+      das possibilidades que o curso de Letras proporciona.</p>
+    </article>
+  <footer>
+    <!-- Rodapé, indicar informações de autoria do guiaLET e licença -->
+    <p>Créditos</p>
+    <ul>
+      <li>Danniel Carvalho - Coordenação Geral</li>
+      <li>João Paulo Lazzarini-Cyrino - Site </li>
+      <li>Universidade Federal da Bahia - Instituição Executora</li>
+      <li>Instituto de Letras - Unidade Executora</li>
+    </ul>
+  </footer>
+  <script type="text/javascript">
+    menuVolumes("json/volumes.json");
+    var volumeAtual = "";
+    var artigoAtual = 0;
+
+    /*** Carregar Artigo ***/
+    function carregaArtigo(htmlArtigo){
+      ajx = new XMLHttpRequest();
+      ajx.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("artigo").innerHTML = this.responseText;
+        }
+      };
+      ajx.open("GET",htmlArtigo, true);
+      ajx.send();
+    }
+
+    /*** Preparar volume (baseado no JSON de cada volume): gerar indice rapido e pagina indice***/
+    function preparaVolume(jsonVolume){
+      /* carregar índice rápido */
+      document.getElementById("indice-rapido").style.display = "block";
+      /*** página índice ***/
+
+      /* toda parte deve ser iniciada com um objeto com a propriedade parte tendo o título da parte como valor
+      e finalizada com outro obejto com a propriedade parte tendo o valor 'fim' */
+      var lista = "";
+      jsonVolume.indice.forEach(function(i,index) {
+        if ('parte' in i && i.parte != 'fim'){
+          lista += "<h2>" + i.parte + "</h2><ol>";
+        } else if ('titulo' in i && i.titulo == "Apresentação"){
+          lista += "<h2><a href='' onclick='carregaArtigo(\"" + i.pagina + "\"); return false;'>" + i.titulo + "</a></h2>";
+        } else if ('parte' in i && i.parte == 'fim'){
+          lista += "</ol>";
+        } else {
+          lista += "<li><a href='' onclick='carregaArtigo(\"" + i.pagina + "\"); return false;'>" + i.titulo + "</a> - " + i.autoria + "</li>";
+        }
+
+      });
+      var html = "<h1>" + jsonVolume.titulo + "</h1>" + lista;
+      document.getElementById("artigo").innerHTML = html;
+    }
+
+    /*** Carregar volume ***/
+    function carregaVolume(arquivoVolume) {
+      volumeAtual = arquivoVolume;
+      console.log(arquivoVolume);
+      ajx = new XMLHttpRequest();
+      ajx.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          preparaVolume(JSON.parse(this.responseText));
+        }
+      };
+      ajx.open("GET",arquivoVolume, true);
+      ajx.send();
+    }
+
+
+    /*** Menu de volumes ***/
+    function menuVolumes(arquivoVolumes) {
+      /* Função de manipulação de volumes.json */
+      function MenuJSON(obj) {
+        var html = "";
+        obj.volumes.forEach(function(i) {
+          html += "<li><a href='' onclick='carregaVolume(\"" + i.arquivo + "\"); return false;'>" + i.titulo + "</a></li>";
+        });
+        return html;
+      }
+      /* Procedimento Ajax */
+      var ajx = new XMLHttpRequest();
+      ajx.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+         document.getElementById('menu-volumes').innerHTML += MenuJSON(JSON.parse(this.responseText));
+       }
+      };
+      ajx.open("GET", arquivoVolumes, true);
+      ajx.send();
+    }
+
+  </script>
+</body>
+
+
+
+
+
+</html>
