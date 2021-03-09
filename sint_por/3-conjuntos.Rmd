@@ -1,0 +1,144 @@
+---
+title: "Conjuntos e Funções"
+author: "João Paulo Lazzarini Cyrino"
+date: "08/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Teoria dos Conjuntos
+
+Um conjunto é uma coleção de objetos **distintos**. Esses objetos são *membros* ou *elementos* de um conjunto. O conjunto pode conter elementos bastante distintos entre si e os objetos podem ser bastante abstratos. 
+
+* Conjunto de objetos vermelhos
+* Conjunto de fonemas do chinês
+* Conjunto de números naturais
+
+Conjuntos podem ser grandes, infinitos, conter um único membro ou mesmo serem vazios. Um conjunto pode conter outros conjuntos, de forma que um conjunto também pode ser membro de outros conjuntos. 
+
+Um conjunto pode ser bem definido mesmo que não conheçamos todos os seus membros. Por exemplo, o conjunto dos habitantes de Salvador. O interessante da Teoria dos Conjuntos, aliás, é explorar o que podemos fazer com conjuntos independentemente de quais são seus membros.
+
+### Um pouco de notação
+
+Por convenção matemática, os conjuntos recebem letras maiúsculas como nomes: conjunto $A$ de autores da literatura portuguesa; conjunto $F$ de fonemas do francês, etc. 
+
+Além disso, quando queremos especificar os membros de um conjunto temos três opções:
+
+* **Lista**: Podemos listar os membros de um conjunto: *A = \{Camilo Castelo Branco, Eça de Queirós, Almeida Garret, ...\}* Note que podemos utilizar reticências para indicar partes do conjunto que não mencionamos ou mesmo infinitude. 
+* **Propriedades dos elementos (notação de Predicado)**: Podemos utilizar a seguinte notação *A = {x | x é autor da literatura portuguesa}*. Ou seja, especificamos uma propriedade para qualquer elemento $x$ que pertença no conjunto. Essa notação pode ser ainda mais formalizada, por exemplo: *P = \{x | x $\in$ N ^ x < 10\}*, conjunto dos números naturais (que pertencem a N) e são menores que 10. 
+* **Regras recursivas**: Essa é muito útil para linguistas. Vamos supor que queiramos um conjunto de números pares a partir de 4 (E = {4,6,8,10...}. Podemos criar a seguinte lista de regras: 
+  + $4 \in E$
+  + $x \in E \rightarrow (x+2) \in E$ (se x pertence a E, x+2 também pertence a E)
+  + Nada mais pertence a E. 
+
+
+É importante mencionar que, para conjuntos, apenas consideramos os membros distintos. Dessa forma, $\{1,1,2,3,4,4\} = \{1,2,3,4\}$. Aliás, se dois conjuntos $A$ e $B$ possuem exatamente os mesmos membros, dizemos que eles são conjuntos **idênticos**, $A=B$
+
+O número de membros que pertencem a um dado conjunto $A$ é a **cardinalidade** de $A$, representada por $|A|$. Dessa forma, se $A = \{a,e,i,o,u\}$, $|A| = 5$. 
+
+### Subconjuntos 
+
+Quando todo membro de um conjunto $A$ é também membro de $B$ dizemos que $A$ é um **subconjunto** de $B$, ou $A \subseteq B$. Perceba que se todo membro de $A$ é membro de $B$ é possível que $A = B$. Ou seja, $A$ pode ser subconjunto dele próprio. A notação $A \subseteq B$ dá conta disso. Porém, se quisermos deixar claro que estamos falando de um subconjunto $A$ que não possui todos os elementos de $B$, utilizamos a notação $A \subset B$, e dizemos que $A$ é um **subconjunto próprio** de $B$.
+
+Exemplos:
+
+* $V = \{a,e,i,o,u\}$ e $A = \{x | x$ é uma letra do alfabeto$\}$, portanto $V \subset A$.
+* $A = B$, portanto $A \subseteq B$. 
+* Sabemos que $A = \{t,m,n,k,p\}$ e que $B \subseteq A$. Dessa forma:
+  + $B$ pode ser idêntico a $A$. 
+  + $A$ pode ter ao menos um membro a mais que $B$. 
+
+Quando $A$ não é um subconjunto de $B$, utilizamos as notações $A \not\subset B$ ou $A \not\subseteq B$ conforme o caso.
+
+**Para pensar: ** Considerando que membros de conjuntos são diferentes de conjuntos, mas que conjuntos podem ser membros de outros conjuntos, as afirmações abaixo são verdadeiras se $A = \{c,\{d\}\}$:
+
+* $\{c\} \subset A$, um conjunto contendo $c$ é um subconjunto de $A$. 
+* $\{d\} \not\subset A$, $\{d\}$ não é um subconjunto de $A$, porque $d \not\in A$, mas
+* $\{\{d\}\} \subset A$, um conjunto contendo um conjunto que contém $d$ é um subconjunto de $A$ porque o conjunto $\{d\} \in A$. 
+
+Portanto, embora conjuntos podem ter outros conjuntos como membros, um subconjunto $A$ de um conjunto $B$ é diferente de um conjunto $A$ que seja membro de um conjunto $B$. 
+
+### Conjunto potência (conjunto de partes)
+
+Um conjunto potência (power set) $p(A)$ é o conjunto contendo todos os subconjuntos de $A$. Ele possui a cardinalidade $2^n$, em que $n$ é o número de membros de A. 
+
+Considerando que $A = \{a,b\}$, seus subconjuntos são:
+
+* $\{a,b\}$
+* $\{a\}$
+* $\{b\}$
+* $\emptyset$, conjunto vazio (todo conjunto tem um conjunto vazio como subconjunto)
+
+Logo, $p(A) = \{\{a,b\},\{a\},\{b\},\emptyset\}$ e $|p(A)| = 2^2 = 4$.
+
+### União e Intersecção
+
+Com a noção de subconjuntos conseguimos derivar outros conjuntos a partir de um único conjunto. Com as noções de **união** e **intersecção** conseguimos formar novos conjuntos a partir de dois conjuntos. 
+
+A **união** de dois conjuntos $A$ e $B$ corresponde a um conjunto com todos os membros de $A$ e todos os membros de $B$. A notação é $A \cup B$. Dessa forma, se $A = \{a,e,k\}$ e $B = \{m,t,u\}$, $A \cup B = \{a,e,k,m,t,u\}$.
+
+A **intersecção** de dois conjuntos $A$ e $B$ corresponde a um conjunt com apenas os membros em comum entre $A$ e $B$. A notação é $A \cap B$. Dessa forma, se $A = \{i,j,k\}$ e $B = \{k,l,m\}$, $A \cap B = \{k\}$.
+
+**Importante: ** união e intersecção são operações que geram *conjuntos*, não *membros de conjuntos*. Dessa forma, seguindo acima $A \cap B = \{k\}$ e $A \cap B \neq k$
+
+Podemos definir logicamente **união** e **intersecção** da seguinte forma:
+
+* $A \cup B = \{x | x \in A$ **ou** $x \in B \}$
+* $A \cap B = \{x | x \in A$ **e** $x \in B\}$
+
+### Diferença e Complemento
+
+Além das operações de **união** e **intersecção**, temos a operação de subtração, veja a definição lógica:
+
+$A-B = \{x | x \in A$ e $x \not\in B\}$
+
+Isso significa todos os membros do conjunto $A$ que não pertencem ao conjunto $B$. $A-B$ também é conhecido como o *complemento relativo* de $A$ e $B$. Quando queremos um conjunto que inclui todo o universo menos o conjunto $A$ queremos o complemento de $A$, que é notado por $A'$:
+
+$A' = \{x | x \not\in A\} = U - A$
+
+## Relações e Funções
+
+Um conceito paralelo ao de conjuntos é o de **par ordenado**. Ao passo que conjuntos não possuem ordem e os elementos são únicos, pares ordenados permitem elementos repetidos e possuem ordenamento.
+
+$<a,b>$ é um par ordenado em que o primeiro elemento é $a$ e o segundo é $b$.
+
+Além de pares ordenados, podemos ter tuplas (3 elementos), quádruplas, etc. 
+
+Se temos dois conjuntos $A$ e $B$, podemos formar pares ordenados a partir de seus membros a partir do **produto cartesiano**:
+
+$A \times B = \{<a,b>|a \in A$ e $b \in B\}$
+
+Vamos supor que $A = \{a,b\}$ e $B = \{1,2,3\}$, dessa forma, $A \times B = \{<a,1>,<a,2>,<a,3>,<b,1>,<b,2>,<b,3>\}$
+
+Uma relação é um subconjunto do produto cartesiano de dois conjuntos, logo $R \subseteq A \times B$. Podemos representar uma relação entre membros de $A$ e de $B$ como $aRb$ ou $Rab$.
+
+Uma **função** é um tipo especial de relação. Uma função é uma relação do tipo $aRb$ em que:
+
+* O conjunto $A$ é o domínio de $R$
+* O conjunto $B$ é o contradomínio de $R$
+* Todo elemento do domínio é pareado com apenas um elemento do contradomínio. 
+
+Em outras palavras, nunca teremos mais de um par com um elemento de $A$, mas podemos ter mais de um par com o mesmo elemento de $B$. Além disso, todo elemento do conjunto $A$ precisa estar pareado com $B$, mas nem todo elemento de $B$ precisa estar pareado com $A$.
+
+Considerando $A = \{a,b\}$ e $B = \{1,2,3\}$, temos que:
+
+* Isso é uma função: $\{<a,1>,<b,1>\}$, *todos os membros de A estão pareados com ao menos um membro de B*
+* Isso também é uma função: $\{<a,3>,<b,2>\}$
+* Isso não é uma função: $\{<a,1>\}$, *apenas um membro de A está pareado com ao menos um membro de B*
+* Isso também não é uma função: $\{<a,1>,<b,2>,<b,3>\}$ *há mais de um par com um elemento de A*
+
+Representamos funções de várias formas:
+
+* **Notação de conjuntos:** $F: A \rightarrow B$, uma função de domínio $A$ e contradomínio $B$.
+* **Notação de predicado:** $F = \{<x,y>| y = 2x\}$, uma função que relaciona um número a seu dobro.
+* **Notação f(x):** $f(x) = 2x$, para qualquer x, retorne o dobro de x. 
+* **Notação lambda:** $\lambda x.2x$, idem.
+
+O conjunto de valores retornados por uma função (os valores de b em $<a,b>$) é denominado **imagem**. Dessa foram, podemos definir conjuntos a partir de funções. 
+
+Como aprendemos funções apenas com números na escola não pensamos que o conceito de função pode se aplicar a quaisquer coisas. Quando mudamos de canal na televisão, por exemplo, temos uma função que liga um número N a um canal C $F: N \rightarrow C$. Mais de um número pode resultar no mesmo canal (acontecia em alguns serviços de tv a cabo antigos, por exemplo), mas nunca um mesmo número resulta em dois canais. 
