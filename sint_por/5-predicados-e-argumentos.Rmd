@@ -1,0 +1,166 @@
+---
+title: 'Aula 5: Predicados Semânticos e Frases'
+author: "João Paulo Lazzarini Cyrino"
+date: "16/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+A palavra *predicado* é bastante ubíqua na terminologia da sintaxe. Falamos sobre *sujeito* vs. *predicado*, sobre *predicativos*, sobre *predicadores*, etc. Aqui vamos abordar uma importante definição de *predicado* que não necessariamente se aplica ao predicado que vemos oposto ao sujeito na gramática normativa. Para não haver confusão, vamos definir o predicado desta aula como *predicado semântico*. 
+
+O *predicado semântico* é a raiz de toda a análise sintática e por isso ele é tão importante. Se aprendermos a identificar predicados semânticos nas frases teremos muita facilidade em analisá-la, em entender o que são objetos, complementos, predicativos e adjuntos. 
+
+O que vamos abordar aqui não é um assunto de sintaxe propriamente, mas sim de semântica formal. Trata-se de um assunto necessário, no entanto, porque a forma mais usual de analisar a sintaxe das línguas é aquela que relaciona partes das frases a **funções sintáticas**. O papel dessas funções sintáticas pode ser generalizado em termos semânticos: cada parte da frase possui uma função que contribi de alguma forma para a construção do significado final da frase. Sucede que, enquanto as **funções sintáticas** podem se tipificar de diversas maneiras, sua contraparte semântica se resume somente a duas realidades: a de *ser predicado* e a de *ser argumento*. 
+
+Vamos explorar. 
+
+## O significado da frase
+
+> Um dos fatos mais salientes a respeito das sentenças de uma língua natural é que seus falantes as utilizam a todo momento para falar sobre o mundo em que vivem. Tal fato parece ligado à intuição de que as sentenças têm significado e que, cientes desse significado, somos capazes de estabelecer conexões entre linguagem e realidade. Por exemplo, imagine que alguém diga a você: Está chovendo em Paris. Se você souber o significado dessa sentença, e assumindo que a pessoa esteja sendo sincera, você, então, terá aprendido algo sobre o mundo. Da mesma forma, mas no sentido inverso, se você obtiver (digamos, visualmente) informação sobre o tempo chuvoso em Paris, você automaticamente concluirá que a sentença *Está chovendo em Paris* é verdadeira. Ou seja, saber o significado de uma sentença nos permite transitar da linguagem para o mundo e do mundo para a linguagem. (FERREIRA, Marcelo. *Curso de Semântica Formal*. Berlim: Language Science Press. 2019.)
+
+De acordo com os pressupostos da semântica formal, saber o significado de uma frase é equivalente a saber quais as condições para que aquela frase seja verdadeira. Então, por exemplo, quando nos deparamos com uma frase como
+
+>(1) O cachorro de Maria está com fome. 
+
+sabemos que há uma série de requisitos a serem cumpridos para que essa frase seja verdadeira. Alguns deles:
+
+- Existe um cachorro
+- Existe Maria
+- O cachorro pertence a Maria
+- O cachorro sente fome no momento
+
+Se qualquer um desses requisitos (acarretamentos) não for cumprido, a frase é falsa. Chamamos então esses requisitos de condições de verdade. 
+
+## Composicionalidade
+
+Podemos dizer que cada item lexical da frase (palavra) contribui de alguma forma para se chegar ao significado final da frase. Essa contribuição se dá de forma composicional: o significado individual de cada item lexical se relaciona com o significado de outro item lexical e um significado dessa relação emerge. O significado dessa relação, por sua vez, pode se combinar com o significado de outro item lexical, ou de outra relação, até termos o significado da totalidade da frase. 
+
+Nessa e nas próximas aulas aprenderemos uma forma geral de calcular como se dá a formação dos significados das frases a partir de seus itens lexicais. Esse método nos permitirá entender, do ponto de vista do significado, como que a frase pode ser dividida e como cada palavra está atuando nessa frase. Uma vez que conseguimos analisar a frase dessa forma, análise sintática será simplesmente uma questão de dar nomes e esses nomes serão facilmente compreendidos.
+
+## O significado de uma frase simples
+
+Vamos tomar uma frase bastante simples: **João trabalha**
+
+Podemos entender que essa frase é verdadeira somente se existe um indivíduo chamado "João" e se esse indivíduo trabalha. Vamos transpor isso para uma linguagem de conjuntos. 
+
+Suponhamos que existe um conjunto $T$ dos indivíduos que trabalham. Esse conjunto pode ser definido matematicamente como:
+
+$T = \{x | x \textrm{ trabalha}\}$
+
+Essa notação significa que, se tomarmos qualquer indivíduo $x$, $x$ pertence ao conjunto $T$ ($x \in T$) se $x \textrm{ trabalha}$. Ou seja, se você quiser saber se $x$ pertence ao conjunto $T$, precisará verificar se ele trabalha. 
+
+Quando temos uma frase como **João trabalha** podemos entender que estamos diante da seguinte asserção:
+
+$\textrm{João} \in T$
+
+Essa asserção é formada por um indivíduo e um conjunto. O valor de verdade dessa frase pode ser calculado pela função indicadora de T:
+
+$I_T: X \to \{0,1\}$
+
+Essa função toma um indivíduo do conjunto $X$ e retorna $1$ se ele pertencer a $T$ ou $0$ se ele não pertencer a $T$. Para verificar se a frase é verdadeira portanto, precisamos verificar se:
+
+$I_T(x \in X, x = \textrm{João}) = 1$
+
+Ou, simplificando:
+
+$I_T(\textrm{João}) = 1$
+
+Esse é o significado da frase, a condição de verdade dessa frase se resume a um resultado $1$ da aplicação da função indicadora do conjunto $T$ ao indivíduo $\textrm{João}$!
+
+## Predicados e argumentos
+
+Na seção anterior vimos que podemos entender o significado de uma frase em termos de conjuntos e funções. Mais especificamente, considerando que - no modelo que estamos abordando - o significado de uma frase corresponde às suas condições de verdade, utilizamos funções indicadoras aplicadas a indivíduos para representar essas condições.
+
+Na linguagem da lógica e da semântica, funções indicadoras recebem o nome de *predicados*. Para facilitar nossa vida, vamos mudar um pouco a notação e dizer que dado um conjunto $C$ qualquer:
+
+$I_C(x|x \in X) = C(x)$
+
+Ou seja, se temos a função indicadora do conjunto $T$ dos indivíduos que trabalham, podemos notá-la como $T(x)$:
+
+$T(x) = I_T(x|x \in X)$
+
+Se quisermos ser mais explícitos quanto ao que o conjunto representa, podemos fazer também:
+
+$\textrm{Trabalha}(x) = I_{\textrm{Trabalha}}(x | x\in X)$
+
+Enfim, mais importante que a notação é entender que o significado da frase **João trabalha** pode ser entendido como o  resultado da aplicação do *predicado* **trabalha** ao *indivíduo* **João**. Vamos agora mudar o nome de *indivíduo* para *argumento*. O *argumento* de uma função/predicado é o valor que lhe fornecemos de entrada. Vamos escrever a frase **João trabalha** nessa linguagem lógico-semântica:
+
+$[\![\textrm{João trabalha}]\!] = \textrm{Trabalha}(\textrm{João})$
+
+Os colchetes duplos em torno de **João trabalha** simplesmente significam que estamos nos referindo ao significado da frase.
+
+### Praticando:
+
+Vamos tentar escrever em linguagem lógico-semântica o significado das frases abaixo:
+
+1. Maria dorme
+2. Pedro fuma
+3. Henrique canta
+
+## Predicados com mais de um argumento
+
+Alguns predicados podem ter mais de um argumento. Isso é bastante comum nas línguas e é o caso dos verbos *transitivos*. Vejamos alguns exemplos:
+
+1. Maria ama Ana
+2. Eduardo adora linguística
+3. Sintaxe deslumbra Érica
+
+Existem várias formas de entender como se traduzem as relações entre os argumentos e o predicado nessas frases em termos de conjuntos e funções, no entando isso exige um aprofundamento maior na área que envolve entender *funções de segunda ordem*. Não vamos entrar nesse respeito aqui no curso. É importante, no entanto entender que para esses casos, existe uma função responsável pelo valor de verdade e dois argumentos que alimentam essa função. Cada argumento ocupa um *papel* na verificação das condições de verdade dessa função. Esse *papel*, denominado papel semântico ou papel temático pode ser de agente, paciente, beneficiário, alvo, etc. Essas especificidades não nos importam agora mais do que o fato que temos em jogo coisas de duas naturezas: *argumentos e predicados*.
+
+Podemos representar o significado das frases acima utilizando a notação **Predicado(argumento1, argumento2)**, então:
+
+1. ama(Maria,Ana)
+2. adora(Eduardo, linguística)
+3. deslumbra(sintaxe, Érica)
+
+
+## Tipo *e* e tipo *t*
+
+Estamos vendo *predicados* como funções que tomam *argumentos* e retornam um valor de verdade:
+
+$P(x): X \to \{0,1\}$
+
+Na notação acima vemos que a função exige que o argumento pertença a um conjunto $X$ e ela associará esse argumento a um conjunto $\{0,1\}$. Vamos ser mais específicos sobre esses conjuntos e dizer que indivíduos pertencem a um conjunto $E$ de indivíduos (do inglês *entities*) e que os valores de verdade representados por 0 e 1 formam na verdade o conjunto $T$ de valores de verdade (do inglês *truth values*). Nesse caso:
+
+$P(x): E \to T$
+
+Ou seja, o predicado $P$ é uma função que mapeia um elemento do conjunto $E$ para um elemento do conjunto $T$. 
+
+Diante disso, poderiam existir outros tipos de predicados, como, por exemplo:
+
+$P'(X): T \to T$
+
+E, sim, a resposta é que podemos ter predicados que tomam outros conjuntos que não $E$ como argumentos. Mas, fundamentalmente eles sempre retornam um indivíduo de $T$, pois caso contrário não seriam predicados. 
+
+Em semântica formal é comum se referir às coisas utilizando um subscrito da seguinte forma:
+
+- João$_e$ trabalha$_{<e,t>}$
+
+O subscrito em João$_e$ significa que João é um indivíduo (João $\in E$) e o subscrito em trabalha$_{<e,t>}$ significa que trabalha é um predicado que toma um indivíduo e retorna um valor de verdade (trabalha(x):$E \to T$).
+
+Essa ideia nos permite entender o seguinte:
+
+- $e . <e,t> = t$
+
+Ou seja, se compusermos um indivíduo $e$ com um predicado $<e,t>$ teremos um valor de verdade $t$ como resultado. 
+
+Quando temos predicados de mais de um argumento:
+
+- João$_e$ ama$_{<e,<e,t>>}$ Paulo$_e \to e . <e,<e,t>> . e = t$
+- Pedro$_e$ deu$_{<e,<e,<e,t>>>}$ [um presente]$_e$ [para Maria]$_e \to e . <e,<e,<e,t>>> .e .e = t$
+
+
+### Pratica:
+
+Vamos representar as frases em notação Predicado(Argumento) e também indicando as operações com tipos envolvidas:
+
+- Luísa comprou bebidas
+- Renato adora batatas
+- Vitor trabalha
+- Romeu guardou dinheiro
