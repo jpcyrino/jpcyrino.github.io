@@ -1,0 +1,122 @@
+---
+title: 'Aula 6: Tempo e o Conceito de Oração'
+author: "João Paulo Lazzarini Cyrino"
+date: "17/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Funções <t,t>
+
+Na aula anterior vimos que temos dois tipos de valores no sistema semântico que utilizamos: 
+
+- tipo **e**: indivíduos
+- tipo **t**: valores de verdade
+
+Vimos também que os predicados são funções que sempre retornam valores do tipo **t**. Além disso, vimos que podemos calcular o significado de uma frase por compor cada tipo *e* com uma função que retorne *t* (funções <e,t>, <e,<e,t>>, <e,<e,<e,t>>>):
+
+- João$_e$ ama$_{<e,<e,t>>}$ Maria$_e$ $\to$ ama(João$_e$,Maria$_e$) = $0_t$ ou $1_t$
+
+Alguns predicados, no entanto, podem tomar valores de verdade como argumentos. Vamos pensar no seguinte exemplo:
+
+- Ana acha Maria inteligente.
+
+Podemos entender que existem dois predicados nessa frase, o primeiro, mais óbvio, é **acha**. Vamos pensar quais os argumentos desse predicado. Parece trivial que **Ana** é um deles, já que é a pessoa que acha alguam coisa. Ou seja, para ser verdade essa frase é preciso que Ana pertença ao conjunto das pessoas que acham alguma coisa, ou mais formalmente:
+
+$$ acha(Ana_e,x) \to \{0_t, 1_t\} $$
+
+O segundo argumento de *acha*, indicado por $x$ acima deve estar associado àquilo que é considerado. No caso dessa frase, o que exatamente é considerado? Vamos comparar a frase em questão com a seguinte frase:
+
+- Ana acha que Maria é inteligente
+
+Vocês concordam que, essencialmente, elas significam a mesma coisa? O *Maria inteligente* é o mesmo *que Maria é inteligente* que Ana acha nas duas frases. Formalmente podemos pensar que ambas estão associadas a
+
+$$ Maria \in Inteligente $$ 
+ou seja, Maria pertence ao conjunto dos inteligentes. Dessa forma, o trecho *Maria inteligente*, ou a oração subordinada *que Maria é inteligente* pode ser entendida como tendo por significado o predicado do conjunto Inteligente aplicado a Maria, ou seja:
+
+$$ inteligente(Maria)$$
+
+Se estivermos corretos quanto a isso, podemos entender que o predicado $Inteligente(Maria)$ é o segundo argumento de *acha* na frase *Ana acha Maria inteligente*. Nesse caso:
+
+$$ acha(Ana, inteligente(Maria)) $$
+
+Agora, perceba que aqui, *acha* é um predicado do tipo $<e<t,t>>$, ou seja, ele toma um primeiro argumento do tipo $e$ (Ana) e um segundo argumento do tipo $t$, ou seja o predicado $inteligente(Maria)$, que é traduzido em linguagem natural por *Maria inteligente*. 
+
+Em sintaxe chamamos esse predicado *inteligente* de predicativo do Objeto, já que -- para a gramática tradicional -- apenas *Maria* é o objeto do verbo *acha*. Do ponto de vista do significado faz mais sentido considerar que o próprio objeto do verbo *acha* é a estrutura predicativa *Maria inteligente* ($inteligente(Maria)$). 
+
+## Oração
+
+Anteriormente comparamos as frases:
+
+- Ana acha Maria inteligente
+- Ana acha que Maria é inteligente
+
+Dissemos que ambas possuem um significado muito semelhante que pode ser representado por $acha(Ana, inteligente(Maria))$. Em sintaxe tradicional, no entanto, as duas frases possuem uma diferença: a primeira é composta de uma oração e a segunda é composta de duas orações. 
+
+> **Nota** Há algumas gramáticas que consideram *Maria inteligente* como uma oração reduzida... 
+
+Um dos maiores desafios em sintaxe é definir exatamente o que é uma oração. E, até agora, vimos que semanticamente tudo o que queremos é ter um predicado que nos dê um valor de verdade. Uma primeira candidata a definição do que é uma oração poderia ser exatamente essa: a presença de um predicado semântico saturado (com todos os argumentos preenchidos).   
+
+Porém, vemos que uma mesma oração pode conter mais de um predicado semântico, como no caso de *Ana acha Maria inteligente*. 
+
+Então o que seria exatamente uma oração? Se começarmos a procurar definições em gramáticas tradicionais, vamos nos deparar com definições bastante verbocêntricas de oração, definido as orações de acordo com a presença do verbo. Mas esse tipo de definição gera confusão, pois há frases de uma só oração com mais de um verbo, etc.
+
+Existe algo que realmente é importante para que uma oração exista como tal, trata-se do *tempo*. Todo enunciado linguístico, ao menos em português, precisa carregar uma informação temporal. Também em português, o verbo costuma ser o responsável por carregar essa informação. Dessa forma, podemos dizer que: se há um verbo finito (não no infinitivo), temos informação temporal e, portanto temos uma oração. 
+
+Semanticamente podemos considerar o *tempo* como um predicado por si só, um predicado do tipo <t,t>. Ele tomará o valor de verdade dos predicados semânticos da frase e atribuirá um valor de verdade para a validade daqueles predicados no tempo. 
+
+Dessa forma, a diferença entre *Ana acha Maria inteligente* e *Ana acha que Maria é inteligente* é que, na primeira a verdade da frase é avaliada dentro de um só tempo e na segunda, há a possibilidade de expressar dois tempos, um para o achar, e outro para o ser inteligente. Veja:
+
+- Ana achou que Maria seria inteligente. 
+- Ana achou Maria inteligente
+
+Alterando o tempo de cada oração podemos ver que elas deixaram de ser equivalentes. Podemos pensar no significado de cada uma como:
+
+- **Passado**(achar(Ana, **Fut.Pret.**(inteligente(Maria)))
+- **Passado**(achar(Ana, inteligente(Maria)))
+
+Note que na primeira expressão, temos que **Fut.Pret.**(inteligente(Maria)) figura como argumento de achar. Isso se deve ao fato de que *que Maria seria inteligente* é uma oração **subordinada** e, portanto, precisa ser argumento de algum predicado na oração principal.
+
+## Tempo e verbos de ligação
+
+Verbos de ligação são confusos porque costumeiramente nos induzem a considerar predicativos como sendo objetos desses verbos. Por exemplo:
+
+- O cachorro é grande.
+
+É comum que se cometa o *erro* de análise de dizer que *é* é o verbo e *grande* é o objeto. No entanto, se pensarmos no significado, essa frase está associada ao pertencimento de *o cachorro* ao conjunto dos *grandes*, ou seja, o significado da frase é
+
+- grande(o cachorro)
+
+Por esse ponto de vista fica claro que o predicado semântico aqui é *grande* (predicativo do sujeito). Aí a pergunta: o que fazemos com o verbo *é* então?
+
+O verbo *é* e qualquer verbo de ligação é simplesmente nossa informação de tempo. Sucede que em português, apenas verbos podem carregar essa informação de tempo. Então, quando temos uma oração sem verbo, ou que o predicado principal não é um verbo, o verbo de ligação aparece para carregar a informação de tempo. 
+
+Perceba que algumas línguas não possuem essa restrição. Em turco, por exemplo, qualquer palavra pode carregar tempo. Dessa forma veja que:
+
+- Eu sou professor $\to$ Öğretmen**im** (1pessoa, singular, presente)
+- Eu era professor $\to$ Öğretmen**dim** (1pessoa, singular, passado)
+- Eu quero $\to$ ister**im** (1pessoa, singular, presente)
+- Eu queria $\to$ iste**dim** (1pessoa, singular, passado)
+
+Nesse caso, não faz sentido falar de verbo de ligação nessa língua e muito menos definir orações em torno dos verbos. A oração ocorre quando temos atribuição de um significado de tempo para uma proposição.
+
+Como podemos considerar tempo um predicado do tipo <t,t>, podemos dizer que o verbo de ligação é um predicado equivalente à desinência temporal dos verbos. Se quisermos representar isso semanticamente podemos simplesmente nomear esse predicado pela designação do tempo (Presente, Passado, Futuro), ou utilizando o verbo de ligação ou a desinência de tempo:
+
+- Eu comprei um carro $\to$ -ei(comprar(Eu, um carro)) *ou* passado(comprar(Eu, um carro))
+- Eu fui engenheiro $\to$ fui(engenheiro(Eu)) *ou* passado(engenheiro(Eu))
+ 
+## Prática:
+
+- Maria é inteligente
+- Você acha Maria inteligente.
+- Eduardo pensa que você acha Maria inteligente.
+- O cachorro estava cansado.
+- O gato sabia que o cachorro estava cansado.
+- Ela viu ele chegar.
+- Ela viu que ele chegou.
+
